@@ -17,6 +17,7 @@ environment:
   sdk: ">=2.1.0 <3.0.0"
 
 dependencies:
+  flutter_svg: ^0.15.0
   dio: ^3.0.7
   rxdart: ^0.23.1
   bloc_pattern: ^2.5.1
@@ -44,7 +45,9 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
+  assets:
+    - lib/assets/profile_placeholder.png
+    - lib/assets/profile_placeholder.svg
   #  - images/a_dot_burr.jpeg
   #  - images/a_dot_ham.jpeg
 

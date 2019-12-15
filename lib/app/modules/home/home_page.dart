@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:sigaamobile/app/modules/home/home_module.dart';
 
 import 'home_bloc.dart';
@@ -23,29 +24,44 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    _homeBloc.loadUser();
     return Scaffold(
       body: StreamBuilder<Map<String, dynamic>>(
-        initialData: {},
         stream: _homeBloc.outUser,
         builder: ((context, snapshot) {
-          final _name = snapshot.data["Nome"].toLowerCase().split(" ");
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              _text(
-                  "Bem-vindo ${_capitalize(_name[0])} ${_capitalize(_name[_name.length - 1])}"),
-              _divider(),
-              _label(
-                  title: "Matrícula:",
-                  content: "${snapshot.data["Matrícula"]}"),
-              _divider(),
-              _label(title: "Curso:", content: "${snapshot.data["Curso"]}"),
-              _divider(),
-              _label(title: "IRA:", content: "${snapshot.data["IRA"]}")
-            ],
-          );
+          if (snapshot.data == {} || snapshot.data == null) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          } else {
+            final _name = snapshot.data["Nome"].toLowerCase().split(" ");
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(50.0),
+                  child: FadeInImage(
+                      fit: BoxFit.cover,
+                      width: 100,
+                      height: 100,
+                      placeholder:
+                          AssetImage("lib/assets/profile_placeholder.png"),
+                      image: NetworkImage(snapshot.data["Imagem"])),
+                ),
+                _divider(),
+                _text(
+                    "Bem-vindo ${_capitalize(_name[0])} ${_capitalize(_name[_name.length - 1])}"),
+                _divider(),
+                _label(
+                    title: "Matrícula:",
+                    content: "${snapshot.data["Matrícula"]}"),
+                _divider(),
+                _label(title: "Curso:", content: "${snapshot.data["Curso"]}"),
+                _divider(),
+                _label(title: "IRA:", content: "${snapshot.data["IRA"]}")
+              ],
+            );
+          }
         }),
       ),
     );
@@ -56,6 +72,7 @@ class _HomePageState extends State<HomePage> {
         textAlign: TextAlign.center,
         style: TextStyle(),
       );
+
   _label({String title, String content}) => Column(
         children: <Widget>[
           Text(
@@ -66,8 +83,10 @@ class _HomePageState extends State<HomePage> {
           Text(content)
         ],
       );
+
   _divider() => Divider(
         color: Colors.transparent,
       );
+
   String _capitalize(String s) => s[0].toUpperCase() + s.substring(1);
 }
