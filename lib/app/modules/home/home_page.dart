@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:sigaamobile/app/modules/home/body/body_widget.dart';
 import 'package:sigaamobile/app/modules/home/header/header_widget.dart';
 import 'package:sigaamobile/app/modules/home/home_module.dart';
@@ -63,17 +62,7 @@ class _HomePageState extends State<HomePage> {
                       "Estágio Supervisionado",
                       "Tabalho de Conclusão de Curso - 1"
                     ],
-                  ),
-                  // _text(
-                  //     "Bem-vindo ${_capitalize(_name[0])} ${_capitalize(_name[_name.length - 1])}"),
-                  // _divider(),
-                  // _label(
-                  //     title: "Matrícula:",
-                  //     content: "${snapshot.data["Matrícula"]}"),
-                  // _divider(),
-                  // _label(title: "Curso:", content: "${snapshot.data["Curso"]}"),
-                  // _divider(),
-                  // _label(title: "IRA:", content: "${snapshot.data["IRA"]}")
+                  )
                 ],
               );
             }
@@ -82,27 +71,6 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
-
-  _text(String content) => Text(
-        content,
-        textAlign: TextAlign.center,
-        style: TextStyle(),
-      );
-
-  _label({String title, String content}) => Column(
-        children: <Widget>[
-          Text(
-            title,
-            textAlign: TextAlign.center,
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          Text(content)
-        ],
-      );
-
-  _divider() => Divider(
-        color: Colors.transparent,
-      );
 
   String _capitalize(String s) => s[0].toUpperCase() + s.substring(1);
 }

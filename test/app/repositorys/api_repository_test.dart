@@ -8,11 +8,11 @@ class MockClient extends Mock implements Dio {}
 
 void main() {
   ApiRepository repository;
-  MockClient client;
+  // MockClient client;
 
   setUp(() {
     repository = ApiRepository();
-    client = MockClient();
+    // client = MockClient();
   });
 
   group('ApiRepository Test', () {
