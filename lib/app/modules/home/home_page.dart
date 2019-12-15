@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:sigaamobile/app/modules/home/body/body_widget.dart';
+import 'package:sigaamobile/app/modules/home/header/header_widget.dart';
 import 'package:sigaamobile/app/modules/home/home_module.dart';
+import 'package:sigaamobile/app/modules/home/sub_header/sub_header_widget.dart';
 
 import 'home_bloc.dart';
 
@@ -24,45 +27,58 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: StreamBuilder<Map<String, dynamic>>(
-        stream: _homeBloc.outUser,
-        builder: ((context, snapshot) {
-          if (snapshot.data == {} || snapshot.data == null) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          } else {
-            final _name = snapshot.data["Nome"].toLowerCase().split(" ");
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(50.0),
-                  child: FadeInImage(
-                      fit: BoxFit.cover,
-                      width: 100,
-                      height: 100,
-                      placeholder:
-                          AssetImage("lib/assets/profile_placeholder.png"),
-                      image: NetworkImage(snapshot.data["Imagem"])),
-                ),
-                _divider(),
-                _text(
-                    "Bem-vindo ${_capitalize(_name[0])} ${_capitalize(_name[_name.length - 1])}"),
-                _divider(),
-                _label(
-                    title: "Matrícula:",
-                    content: "${snapshot.data["Matrícula"]}"),
-                _divider(),
-                _label(title: "Curso:", content: "${snapshot.data["Curso"]}"),
-                _divider(),
-                _label(title: "IRA:", content: "${snapshot.data["IRA"]}")
-              ],
-            );
-          }
-        }),
+    return SafeArea(
+      child: Scaffold(
+        drawer: Container(
+            color: Colors.white,
+            width: (3 * MediaQuery.of(context).size.width) / 4),
+        body: StreamBuilder<Map<String, dynamic>>(
+          stream: _homeBloc.outUser,
+          builder: ((context, snapshot) {
+            if (snapshot.data == {} || snapshot.data == null) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            } else {
+              final _name = snapshot.data["Nome"].toLowerCase().split(" ");
+              return Column(
+                // mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  HeaderWidget(
+                    url: snapshot.data["Imagem"],
+                    name:
+                        "${_capitalize(_name[0])} ${_capitalize(_name[_name.length - 1])}",
+                    course: snapshot.data["Curso"],
+                  ),
+                  SubHeaderWidget(info: {
+                    "IRA": snapshot.data["IRA"],
+                    "Matrícula": snapshot.data["Matrícula"],
+                  }),
+                  BodyWidget(
+                    disciplinas: [
+                      "Compiladores",
+                      "Programação Funcional",
+                      "Segurança",
+                      "Estágio Supervisionado",
+                      "Tabalho de Conclusão de Curso - 1"
+                    ],
+                  ),
+                  // _text(
+                  //     "Bem-vindo ${_capitalize(_name[0])} ${_capitalize(_name[_name.length - 1])}"),
+                  // _divider(),
+                  // _label(
+                  //     title: "Matrícula:",
+                  //     content: "${snapshot.data["Matrícula"]}"),
+                  // _divider(),
+                  // _label(title: "Curso:", content: "${snapshot.data["Curso"]}"),
+                  // _divider(),
+                  // _label(title: "IRA:", content: "${snapshot.data["IRA"]}")
+                ],
+              );
+            }
+          }),
+        ),
       ),
     );
   }

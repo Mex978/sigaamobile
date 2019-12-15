@@ -7,6 +7,7 @@ class AppWidget extends StatelessWidget {
     return MaterialApp(
       title: 'Sigaa Mobile',
       theme: ThemeData(
+        fontFamily: "Open Sans",
         primarySwatch: Colors.blue,
       ),
       home: LoginModule(),

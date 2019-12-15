@@ -1,3 +1,6 @@
+import 'package:sigaamobile/app/modules/home/body/body_bloc.dart';
+import 'package:sigaamobile/app/modules/home/sub_header/sub_header_bloc.dart';
+import 'package:sigaamobile/app/modules/home/header/header_bloc.dart';
 import 'package:sigaamobile/app/modules/home/home_bloc.dart';
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +9,9 @@ import 'package:sigaamobile/app/modules/home/home_page.dart';
 class HomeModule extends ModuleWidget {
   @override
   List<Bloc> get blocs => [
+        Bloc((i) => BodyBloc()),
+        Bloc((i) => SubHeaderBloc()),
+        Bloc((i) => HeaderBloc()),
         Bloc((i) => HomeBloc()),
       ];
 
