@@ -1,25 +1,25 @@
+import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter/material.dart';
-import 'package:sigaamobile/app/modules/home/body/body_widget.dart';
-import 'package:sigaamobile/app/modules/home/header/header_widget.dart';
-import 'package:sigaamobile/app/modules/home/home_module.dart';
-import 'package:sigaamobile/app/modules/home/sub_header/sub_header_widget.dart';
+import 'components/body/body_widget.dart';
+import 'components/header/header_widget.dart';
+import 'components/sub_header/sub_header_widget.dart';
 
 import 'home_bloc.dart';
 
-class HomePage extends StatefulWidget {
+class HomeScreen extends StatefulWidget {
   final String title;
-  const HomePage({Key key, this.title = "Home"}) : super(key: key);
+  const HomeScreen({Key key, this.title = "Home"}) : super(key: key);
 
   @override
-  _HomePageState createState() => _HomePageState();
+  _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomeScreenState extends State<HomeScreen> {
   HomeBloc _homeBloc;
 
   @override
   void initState() {
-    _homeBloc = HomeModule.to.getBloc<HomeBloc>();
+    _homeBloc = BlocProvider.getBloc<HomeBloc>();
     _homeBloc.loadUser();
     super.initState();
   }

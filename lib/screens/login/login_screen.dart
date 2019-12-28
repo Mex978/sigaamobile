@@ -1,8 +1,8 @@
+import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter/material.dart';
-import 'package:sigaamobile/app/app_module.dart';
-import 'package:sigaamobile/app/consts.dart';
-import 'package:sigaamobile/app/modules/home/home_module.dart';
-import 'package:sigaamobile/app/modules/login/login_bloc.dart';
+import 'package:sigaamobile/consts/request_state.dart';
+import 'package:sigaamobile/screens/home/home_screen.dart';
+import 'package:sigaamobile/screens/login/login_bloc.dart';
 
 class LoginPage extends StatefulWidget {
   final String title;
@@ -19,7 +19,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   void initState() {
-    _loginBloc = AppModule.to.getBloc<LoginBloc>();
+    _loginBloc = BlocProvider.getBloc<LoginBloc>();
     _listener();
     super.initState();
   }
@@ -28,7 +28,7 @@ class _LoginPageState extends State<LoginPage> {
     _loginBloc.outState.listen((state) {
       if (state == RequestState.SUCCESS) {
         Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => HomeModule()));
+            context, MaterialPageRoute(builder: (context) => HomeScreen()));
       }
     });
   }

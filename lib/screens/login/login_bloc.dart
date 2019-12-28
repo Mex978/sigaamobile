@@ -1,12 +1,11 @@
 import 'dart:async';
 import 'package:bloc_pattern/bloc_pattern.dart';
-import 'package:sigaamobile/app/app_module.dart';
-import 'package:sigaamobile/app/consts.dart';
-import 'package:sigaamobile/app/repositorys/api_repository.dart';
+import 'package:sigaamobile/consts/request_state.dart';
+import 'package:sigaamobile/services/api_repository.dart';
 
 class LoginBloc extends BlocBase {
   ///Declarations
-  ApiRepository _apiRepository = AppModule.to.getDependency<ApiRepository>();
+  ApiRepository _apiRepository = BlocProvider.getDependency<ApiRepository>();
   StreamController<Map<String, dynamic>> _userController =
       StreamController<Map<String, dynamic>>();
   StreamController<RequestState> _stateController =

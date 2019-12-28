@@ -1,12 +1,10 @@
 import 'dart:async';
-
 import 'package:bloc_pattern/bloc_pattern.dart';
-import 'package:sigaamobile/app/app_module.dart';
-import 'package:sigaamobile/app/modules/login/login_bloc.dart';
+import 'package:sigaamobile/screens/login/login_bloc.dart';
 
 class HomeBloc extends BlocBase {
   ///Declarations
-  LoginBloc _loginBloc = AppModule.to.getBloc<LoginBloc>();
+  LoginBloc _loginBloc = BlocProvider.getBloc<LoginBloc>();
 
   ///Observables
   Map<String, dynamic> _user = {};
