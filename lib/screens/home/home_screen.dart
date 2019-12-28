@@ -1,10 +1,4 @@
-import 'package:bloc_pattern/bloc_pattern.dart';
-import 'package:flutter/material.dart';
-import 'components/body/body_widget.dart';
-import 'components/header/header_widget.dart';
-import 'components/sub_header/sub_header_widget.dart';
-
-import 'home_bloc.dart';
+import 'index.dart';
 
 class HomeScreen extends StatefulWidget {
   final String title;

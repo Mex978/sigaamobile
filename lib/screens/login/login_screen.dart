@@ -1,8 +1,4 @@
-import 'package:bloc_pattern/bloc_pattern.dart';
-import 'package:flutter/material.dart';
-import 'package:sigaamobile/consts/request_state.dart';
-import 'package:sigaamobile/screens/home/home_screen.dart';
-import 'package:sigaamobile/screens/login/login_bloc.dart';
+import 'index.dart';
 
 class LoginPage extends StatefulWidget {
   final String title;
