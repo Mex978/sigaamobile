@@ -1,72 +1,85 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:sigaamobile/shared/utils.dart';
 
 class HeaderWidget extends StatelessWidget {
   final String url;
-  final String name;
+  final List<String> name;
   final String course;
 
-  HeaderWidget(
-      {@required this.url, @required this.name, @required this.course});
+  HeaderWidget({@required this.url, @required this.name, this.course});
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-        width: MediaQuery.of(context).size.width,
-        color: Colors.transparent,
-        child: Column(
-          children: <Widget>[
-            // ClipRRect(
-            //   borderRadius: BorderRadius.circular(50.0),
-            //   child: FadeInImage(
-            //       fit: BoxFit.cover,
-            //       width: 100,
-            //       height: 100,
-            //       placeholder:
-            //           AssetImage("lib/assets/profile_placeholder.png"),
-            //       image: NetworkImage(snapshot.data["Imagem"])),
-            // ),
-            // CircleAvatar(
-            //   radius: 51,
-            //   backgroundColor: Colors.black,
-            //   child: CircleAvatar(
-            //     radius: 50,
-            //     backgroundImage: NetworkImage(snapshot.data["Imagem"]),
-            //   ),
-            // ),
-            CircleAvatar(
-              radius: 50,
-              backgroundImage: NetworkImage(url),
-            ),
-            _divider(),
-            Text(
-              name,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white),
-            ),
-            _divider(),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 32),
-              child: Text(
-                course,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white),
-              ),
-            )
-          ],
-        ),
-      ),
+    return SliverAppBar(
+        expandedHeight: 150.0,
+        floating: false,
+        pinned: true,
+        leading: _leanding(context),
+        actions: _actions(context),
+        flexibleSpace: _flexibleSpace(context));
+  }
+
+  _leanding(BuildContext context) {
+    return IconButton(
+      onPressed: () {
+        Scaffold.of(context).openDrawer();
+      },
+      icon: Icon(Icons.menu),
     );
   }
 
-  _divider() {
-    return Divider(color: Colors.transparent);
+  _actions(BuildContext context) {
+    return <Widget>[
+      GestureDetector(
+        onTap: () {
+          _showPerfilImage(context);
+        },
+        child: Padding(
+          padding: EdgeInsets.symmetric(vertical: 5),
+          child: CircleAvatar(
+            backgroundImage: NetworkImage(url),
+            minRadius: 23,
+          ),
+        ),
+      )
+    ];
+  }
+
+  _flexibleSpace(BuildContext context) {
+    return FlexibleSpaceBar(
+        collapseMode: CollapseMode.parallax,
+        centerTitle: true,
+        title:
+            Text("${capitalize(name[0])} ${capitalize(name[name.length - 1])}"),
+        background: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: NetworkImage(url),
+              fit: BoxFit.cover,
+            ),
+          ),
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+            child: Container(
+              decoration: BoxDecoration(color: Colors.white.withOpacity(0.0)),
+            ),
+          ),
+        ));
+  }
+
+  _showPerfilImage(BuildContext context) {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return Dialog(
+            insetAnimationCurve: Curves.fastOutSlowIn,
+            insetAnimationDuration: Duration(milliseconds: 300),
+            child: Image.network(
+              url,
+              fit: BoxFit.cover,
+            ),
+          );
+        });
   }
 }

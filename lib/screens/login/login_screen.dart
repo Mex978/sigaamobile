@@ -32,7 +32,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print("Login Screen BUILDED");
     return Scaffold(
         body: SafeArea(
       child: GestureDetector(
@@ -45,35 +44,25 @@ class _LoginScreenState extends State<LoginScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.only(bottom: 100),
-                    child: sigaaLogo(),
-                  ),
-                  TextField(
-                    onChanged: (content) {
-                      setState(() {
-                        _user = content;
-                      });
-                    },
-                    decoration: InputDecoration(labelText: "Usuário"),
-                  ),
-                  Divider(
-                    color: Colors.transparent,
-                    height: 16,
-                  ),
-                  TextField(
-                    onChanged: (content) {
-                      setState(() {
-                        _pass = content;
-                      });
-                    },
-                    obscureText: true,
-                    decoration: InputDecoration(labelText: "Senha"),
-                  ),
-                  Divider(
-                    color: Colors.transparent,
-                    height: 64,
-                  ),
+                  sigaaLogo(),
+                  _divider(100),
+                  _input(
+                      onChanged: (content) {
+                        setState(() {
+                          _user = content;
+                        });
+                      },
+                      label: "Usuário"),
+                  _divider(16),
+                  _input(
+                      onChanged: (content) {
+                        setState(() {
+                          _pass = content;
+                        });
+                      },
+                      label: "Senha",
+                      isPassword: true),
+                  _divider(64),
                   Padding(
                       padding: EdgeInsets.only(bottom: 16),
                       child: StreamBuilder<RequestState>(
@@ -98,6 +87,17 @@ class _LoginScreenState extends State<LoginScreen> {
     ));
   }
 
+  _input(
+      {ValueChanged<String> onChanged,
+      @required String label,
+      bool isPassword: false}) {
+    return TextField(
+      onChanged: (content) => onChanged(content),
+      obscureText: isPassword,
+      decoration: InputDecoration(labelText: label),
+    );
+  }
+
   _buttonLogin() {
     return RaisedButton(
       child: Text(
@@ -108,6 +108,13 @@ class _LoginScreenState extends State<LoginScreen> {
       onPressed: () {
         _loginBloc.login(_user, _pass);
       },
+    );
+  }
+
+  _divider(double height) {
+    return Divider(
+      color: Colors.transparent,
+      height: height,
     );
   }
 
