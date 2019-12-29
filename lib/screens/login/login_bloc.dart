@@ -12,7 +12,7 @@ class LoginBloc extends BlocBase {
       StreamController<RequestState>.broadcast();
 
   ///Observables
-  Map<String, dynamic> _user = {};
+  Map<String, dynamic> _user;
   RequestState _state = RequestState.NONE;
 
   ///Outputs
@@ -24,10 +24,16 @@ class LoginBloc extends BlocBase {
   login(String user, String pass) async {
     _state = RequestState.LOADING;
     _stateController.add(_state);
-    _user = await _apiRepository.login(user, pass);
-    _userController.add(_user);
-    _state = RequestState.SUCCESS;
-    _stateController.add(_state);
+    try {
+      _user = await _apiRepository.login(user, pass);
+      _userController.add(_user);
+      _state = RequestState.SUCCESS;
+      _stateController.add(_state);
+    } catch (e) {
+      print(e);
+      _state = RequestState.ERROR;
+      _stateController.add(_state);
+    }
   }
 
   @override

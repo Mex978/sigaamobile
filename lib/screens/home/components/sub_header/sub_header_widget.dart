@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 
-class SubHeaderWidget extends StatelessWidget {
+class SubHeaderWidget extends SliverPersistentHeaderDelegate {
   final Map<String, dynamic> info;
 
   SubHeaderWidget({@required this.info});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Container(
-      color: Colors.lightBlue,
+      color: Colors.orange,
       padding: EdgeInsets.symmetric(vertical: 5),
+      height: 60,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: info.entries.map((entry) {
@@ -33,5 +35,17 @@ class SubHeaderWidget extends StatelessWidget {
         }).toList(),
       ),
     );
+  }
+
+  @override
+  double get maxExtent => 60;
+
+  @override
+  double get minExtent => 60;
+
+  @override
+  bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) {
+    // TODO: implement shouldRebuild
+    return false;
   }
 }

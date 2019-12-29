@@ -1,14 +1,14 @@
 import 'index.dart';
 
-class LoginPage extends StatefulWidget {
+class LoginScreen extends StatefulWidget {
   final String title;
-  const LoginPage({Key key, this.title = "Login"}) : super(key: key);
+  const LoginScreen({Key key, this.title = "Login"}) : super(key: key);
 
   @override
-  _LoginPageState createState() => _LoginPageState();
+  _LoginScreenState createState() => _LoginScreenState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _LoginScreenState extends State<LoginScreen> {
   LoginBloc _loginBloc;
   String _user;
   String _pass;
@@ -22,6 +22,7 @@ class _LoginPageState extends State<LoginPage> {
 
   _listener() {
     _loginBloc.outState.listen((state) {
+      print(state);
       if (state == RequestState.SUCCESS) {
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => HomeScreen()));
@@ -31,84 +32,86 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    print("Login Screen BUILDED");
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Divider(
-                color: Colors.transparent,
-                height: 64,
+        body: SafeArea(
+      child: GestureDetector(
+        onTap: () => _hideKeyboard(),
+        child: Center(
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.only(bottom: 100),
+                    child: sigaaLogo(),
+                  ),
+                  TextField(
+                    onChanged: (content) {
+                      setState(() {
+                        _user = content;
+                      });
+                    },
+                    decoration: InputDecoration(labelText: "Usuário"),
+                  ),
+                  Divider(
+                    color: Colors.transparent,
+                    height: 16,
+                  ),
+                  TextField(
+                    onChanged: (content) {
+                      setState(() {
+                        _pass = content;
+                      });
+                    },
+                    obscureText: true,
+                    decoration: InputDecoration(labelText: "Senha"),
+                  ),
+                  Divider(
+                    color: Colors.transparent,
+                    height: 64,
+                  ),
+                  Padding(
+                      padding: EdgeInsets.only(bottom: 16),
+                      child: StreamBuilder<RequestState>(
+                        stream: _loginBloc.outState,
+                        builder: ((context, snapshot) {
+                          switch (snapshot.data) {
+                            case RequestState.LOADING:
+                              return CircularProgressIndicator();
+                            case RequestState.SUCCESS:
+                              return _buttonLogin();
+                            default:
+                              return _buttonLogin();
+                          }
+                        }),
+                      )),
+                ],
               ),
-              Text("Sigaa Mobile"),
-              Divider(
-                color: Colors.transparent,
-                height: 32,
-              ),
-              TextField(
-                onChanged: (content) {
-                  setState(() {
-                    _user = content;
-                  });
-                },
-                decoration: InputDecoration(labelText: "Usuário"),
-              ),
-              Divider(
-                color: Colors.transparent,
-                height: 16,
-              ),
-              TextField(
-                onChanged: (content) {
-                  setState(() {
-                    _pass = content;
-                  });
-                },
-                obscureText: true,
-                decoration: InputDecoration(labelText: "Senha"),
-              ),
-              Divider(
-                color: Colors.transparent,
-                height: 32,
-              ),
-              StreamBuilder<RequestState>(
-                stream: _loginBloc.outState,
-                builder: ((context, snapshot) {
-                  switch (snapshot.data) {
-                    case RequestState.LOADING:
-                      return CircularProgressIndicator();
-                    case RequestState.SUCCESS:
-                      return _buttonLogin();
-                    default:
-                      return _buttonLogin();
-                  }
-                }),
-              ),
-              Divider(
-                color: Colors.transparent,
-                height: 16,
-              ),
-            ],
+            ),
           ),
         ),
       ),
-    );
+    ));
   }
 
   _buttonLogin() {
     return RaisedButton(
-      color: Colors.blue,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(64)),
       child: Text(
         "Entrar",
         textAlign: TextAlign.center,
-        style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
+        style: TextStyle(color: Theme.of(context).textTheme.button.color),
       ),
       onPressed: () {
         _loginBloc.login(_user, _pass);
       },
     );
+  }
+
+  _hideKeyboard() {
+    FocusScope.of(context).requestFocus(FocusNode());
   }
 }

@@ -1,12 +1,20 @@
 import 'index.dart';
 
-void main() => runApp(BlocProvider(
-      blocs: [Bloc((i) => LoginBloc()), Bloc((i) => HomeBloc())],
-      dependencies: [Dependency((i) => ApiRepository())],
-      child: MaterialApp(
-        theme: ThemeData(
-            fontFamily: "Open Sans",
-            backgroundColor: Color.fromRGBO(250, 250, 250, 1)),
-        home: SplashScreen(),
+void main() => runApp(GestureDetector(
+      onTap: () {
+        hideKeyboard();
+      },
+      child: BlocProvider(
+        blocs: [Bloc((i) => LoginBloc()), Bloc((i) => HomeBloc())],
+        dependencies: [Dependency((i) => ApiRepository())],
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: themeDefault(),
+          home: SplashScreen(),
+        ),
       ),
     ));
+
+hideKeyboard() {
+  SystemChannels.textInput.invokeMethod('TextInput.hide');
+}
