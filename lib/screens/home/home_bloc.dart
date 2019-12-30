@@ -16,6 +16,14 @@ class HomeBloc extends BlocBase {
   ///Outputs
   Stream<Map<String, dynamic>> get outUser => _userController.stream;
 
+  stayLogged() async {
+    while (true) {
+      Future.delayed(Duration(minutes: 30), () {
+        _loginBloc.recoverUser();
+      });
+    }
+  }
+
   ///Fucntions
   loadUser() {
     _user = _loginBloc.getUser;

@@ -14,6 +14,13 @@ class SplashScreen extends StatelessWidget {
     final LoginBloc _loginBloc = BlocProvider.getBloc<LoginBloc>();
     final _user = _loginBloc.getUser;
 
+    BlocProvider.getBloc<LoginBloc>().recoverUser().then((isSuccess) {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => isSuccess ? HomeScreen() : LoginScreen()));
+    });
+
     Future.delayed(Duration(seconds: 2), () {
       Navigator.pushReplacement(
           context,

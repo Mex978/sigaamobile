@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:sigaamobile/consts/request_state.dart';
 import 'package:sigaamobile/services/api_repository.dart';
+import 'package:sigaamobile/shared/utils.dart';
 
 class LoginBloc extends BlocBase {
   ///Declarations
@@ -29,10 +30,26 @@ class LoginBloc extends BlocBase {
       _userController.add(_user);
       _state = RequestState.SUCCESS;
       _stateController.add(_state);
+      saveDataUser(user, pass);
     } catch (e) {
       print(e);
       _state = RequestState.ERROR;
       _stateController.add(_state);
+    }
+  }
+
+  Future<bool> recoverUser() async {
+    final _credentials = await getDataUser();
+
+    if (_credentials != null) {
+      login(_credentials["user"], _credentials["pass"]);
+      if (_state != RequestState.ERROR) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
     }
   }
 
