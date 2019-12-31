@@ -1,3 +1,5 @@
+import 'package:sigaamobile/screens/minhas_notas/minhas_notas_screen.dart';
+
 import 'index.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -22,31 +24,57 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        drawer: Container(
-            color: Colors.white,
-            width: (3 * MediaQuery.of(context).size.width) / 4),
+        drawer: Drawer(
+          child: Padding(
+            padding: EdgeInsets.only(top: 32),
+            child: Column(
+              children: <Widget>[
+                ButtonTheme(
+                  minWidth: 2000,
+                  child: FlatButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => MinhasNotasScreen()));
+                    },
+                    child: Container(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        "Ver notas",
+                        textAlign: TextAlign.left,
+                      ),
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
         body: StreamBuilder<Map<String, dynamic>>(
           stream: _homeBloc.outUser,
           builder: ((context, snapshot) {
             if (snapshot.data == {} || snapshot.data == null) {
+              print("Dados: ${snapshot.data}");
               return Center(
                 child: CircularProgressIndicator(),
               );
             }
 
-            final _name = snapshot.data["Nome"].toLowerCase().split(" ");
+            final _name = snapshot.data["nome"].toLowerCase().split(" ");
 
             return NestedScrollView(
               headerSliverBuilder: (context, innerBoxIsScrolled) {
                 return <Widget>[
                   HeaderWidget(
                     name: _name,
-                    url: snapshot.data["Imagem"],
+                    url: snapshot.data["imagem"],
                   ),
                   SliverPersistentHeader(
                     delegate: SubHeaderWidget(info: {
-                      "IRA": snapshot.data["IRA"],
-                      "Matrícula": snapshot.data["Matrícula"],
+                      "IRA": snapshot.data["ira"],
+                      "Matrícula": snapshot.data["matricula"],
                     }),
                     pinned: true,
                   )

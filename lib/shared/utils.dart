@@ -3,11 +3,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 capitalize(String s) => s[0].toUpperCase() + s.substring(1);
 
 Future<Map<String, String>> getDataUser() async {
+  print("Get data");
   SharedPreferences _preferences = await SharedPreferences.getInstance();
 
-  final _user = _preferences.getString("user");
-  final _pass = _preferences.getString("pass");
-
+  final String _user = _preferences.getString("user");
+  final String _pass = _preferences.getString("pass");
   if (_user == null || _pass == null) {
     return null;
   } else {

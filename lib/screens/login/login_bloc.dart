@@ -39,10 +39,9 @@ class LoginBloc extends BlocBase {
   }
 
   Future<bool> recoverUser() async {
-    final _credentials = await getDataUser();
-
+    final Map<String, String> _credentials = await getDataUser();
     if (_credentials != null) {
-      login(_credentials["user"], _credentials["pass"]);
+      await login(_credentials["user"], _credentials["pass"]);
       if (_state != RequestState.ERROR) {
         return true;
       } else {

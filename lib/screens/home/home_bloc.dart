@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:bloc_pattern/bloc_pattern.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:sigaamobile/screens/login/login_bloc.dart';
 
 class HomeBloc extends BlocBase {
@@ -11,7 +12,7 @@ class HomeBloc extends BlocBase {
 
   ///Controllers
   StreamController<Map<String, dynamic>> _userController =
-      StreamController<Map<String, dynamic>>();
+      BehaviorSubject<Map<String, dynamic>>();
 
   ///Outputs
   Stream<Map<String, dynamic>> get outUser => _userController.stream;
