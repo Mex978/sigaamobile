@@ -3,7 +3,6 @@ import 'package:sigaamobile/index.dart';
 import 'package:sigaamobile/screens/login/index.dart';
 import 'package:sigaamobile/screens/minhas_notas/components/notas_view.dart';
 import 'package:sigaamobile/screens/minhas_notas/minhas_notas_bloc.dart';
-import 'package:sigaamobile/shared/utils.dart';
 
 class MinhasNotasScreen extends StatelessWidget {
   @override
@@ -19,6 +18,7 @@ class MinhasNotasScreen extends StatelessWidget {
             snapshot.data == RequestState.LOADING) {
           return Scaffold(
             appBar: AppBar(
+              centerTitle: true,
               title: Text("Minhas Notas"),
             ),
             body: Center(
@@ -34,6 +34,7 @@ class MinhasNotasScreen extends StatelessWidget {
               if (snapshot == null || !snapshot.hasData) {
                 return Scaffold(
                   appBar: AppBar(
+                    centerTitle: true,
                     title: Text("Minhas Notas"),
                   ),
                   body: Center(

@@ -29,25 +29,18 @@ class _HomeScreenState extends State<HomeScreen> {
             padding: EdgeInsets.only(top: 32),
             child: Column(
               children: <Widget>[
-                ButtonTheme(
-                  minWidth: 2000,
-                  child: FlatButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => MinhasNotasScreen()));
-                    },
-                    child: Container(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        "Ver notas",
-                        textAlign: TextAlign.left,
-                      ),
-                    ),
-                  ),
-                )
+                ListTile(
+                  enabled: true,
+                  leading: Icon(Icons.school),
+                  title: Text("Ver notas"),
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => MinhasNotasScreen()));
+                  },
+                ),
               ],
             ),
           ),

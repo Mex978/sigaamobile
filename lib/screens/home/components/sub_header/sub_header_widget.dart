@@ -9,7 +9,7 @@ class SubHeaderWidget extends SliverPersistentHeaderDelegate {
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Container(
-      color: Colors.orange,
+      color: Theme.of(context).primaryColor,
       padding: EdgeInsets.symmetric(vertical: 5),
       height: 60,
       child: Row(
