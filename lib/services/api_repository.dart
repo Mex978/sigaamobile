@@ -29,7 +29,6 @@ class ApiRepository extends Disposable {
     }).catchError((e) {
       print(e);
     });
-    // print(response);
     return response.data;
   }
 

@@ -70,7 +70,6 @@ class _NotasViewState extends State<NotasView>
     if (key == "codigo" || key == "disciplina") {
       return Container();
     } else {
-      print(key);
       return Container(
         margin: EdgeInsets.only(
             bottom: key == "situacao" ? 20 : 2, top: 2, left: 5, right: 5),

@@ -9,6 +9,9 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  FocusNode _userFocusNode = FocusNode();
+  FocusNode _passFocusNode = FocusNode();
   LoginBloc _loginBloc;
   String _user;
   String _pass;
@@ -37,48 +40,51 @@ class _LoginScreenState extends State<LoginScreen> {
       child: GestureDetector(
         onTap: () => _hideKeyboard(),
         child: Center(
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  sigaaLogo(),
-                  _divider(100),
-                  _input(
-                      onChanged: (content) {
-                        setState(() {
-                          _user = content;
-                        });
-                      },
-                      label: "Usuário"),
-                  _divider(16),
-                  _input(
-                      onChanged: (content) {
-                        setState(() {
-                          _pass = content;
-                        });
-                      },
-                      label: "Senha",
-                      isPassword: true),
-                  _divider(64),
-                  Padding(
-                      padding: EdgeInsets.only(bottom: 16),
-                      child: StreamBuilder<RequestState>(
-                        stream: _loginBloc.outState,
-                        builder: ((context, snapshot) {
-                          switch (snapshot.data) {
-                            case RequestState.LOADING:
-                              return CircularProgressIndicator();
-                            case RequestState.SUCCESS:
-                              return _buttonLogin();
-                            default:
-                              return _buttonLogin();
-                          }
-                        }),
-                      )),
-                ],
+          child: Form(
+            key: _formKey,
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    sigaaLogo(),
+                    _divider(100),
+                    _input(
+                        onChanged: (content) {
+                          setState(() {
+                            _user = content;
+                          });
+                        },
+                        label: "Usuário"),
+                    _divider(16),
+                    _input(
+                        onChanged: (content) {
+                          setState(() {
+                            _pass = content;
+                          });
+                        },
+                        label: "Senha",
+                        isPassword: true),
+                    _divider(64),
+                    Padding(
+                        padding: EdgeInsets.only(bottom: 16),
+                        child: StreamBuilder<RequestState>(
+                          stream: _loginBloc.outState,
+                          builder: ((context, snapshot) {
+                            switch (snapshot.data) {
+                              case RequestState.LOADING:
+                                return CircularProgressIndicator();
+                              case RequestState.SUCCESS:
+                                return _buttonLogin();
+                              default:
+                                return _buttonLogin();
+                            }
+                          }),
+                        )),
+                  ],
+                ),
               ),
             ),
           ),
@@ -91,10 +97,25 @@ class _LoginScreenState extends State<LoginScreen> {
       {ValueChanged<String> onChanged,
       @required String label,
       bool isPassword: false}) {
-    return TextField(
+    return TextFormField(
       onChanged: (content) => onChanged(content),
       obscureText: isPassword,
+      focusNode: label == "Usuário" ? _userFocusNode : _passFocusNode,
       decoration: InputDecoration(labelText: label),
+      validator: (content) {
+        if (content.isEmpty) {
+          return "Insira ${label == "Usuário" ? "seu usuário" : "sua senha"}";
+        } else {
+          return null;
+        }
+      },
+      onFieldSubmitted: (_) {
+        if (label == "Usuário") {
+          FocusScope.of(context).requestFocus(_passFocusNode);
+        } else {
+          _fazerLogin();
+        }
+      },
     );
   }
 
@@ -106,7 +127,7 @@ class _LoginScreenState extends State<LoginScreen> {
         style: TextStyle(color: Theme.of(context).textTheme.button.color),
       ),
       onPressed: () {
-        _loginBloc.login(_user, _pass);
+        _fazerLogin();
       },
     );
   }
@@ -120,5 +141,12 @@ class _LoginScreenState extends State<LoginScreen> {
 
   _hideKeyboard() {
     FocusScope.of(context).requestFocus(FocusNode());
+  }
+
+  _fazerLogin() {
+    if (_formKey.currentState.validate()) {
+      FocusScope.of(context).requestFocus(FocusNode());
+      _loginBloc.login(_user, _pass);
+    }
   }
 }
