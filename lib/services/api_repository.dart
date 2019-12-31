@@ -17,7 +17,7 @@ class ApiRepository extends Disposable {
       print(e);
     });
     // print(response);
-    return json.decode(response.data);
+    return response.data;
   }
 
   Future<List<dynamic>> notas() async {
@@ -30,7 +30,7 @@ class ApiRepository extends Disposable {
       print(e);
     });
     // print(response);
-    return json.decode(response.data);
+    return response.data;
   }
 
   @override
