@@ -51,9 +51,36 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   onTap: () {
                     Navigator.pop(context);
-                    _homeBloc.logout();
-                    Navigator.pushReplacement(context,
-                        MaterialPageRoute(builder: (context) => LoginScreen()));
+                    showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: Text(
+                              "Fazer Logout",
+                              style: TextStyle(color: Colors.black),
+                            ),
+                            content: Text(
+                                "Você confirma que deseja fazer logout da aplicação?"),
+                            actions: <Widget>[
+                              FlatButton(
+                                child: Text("Cancelar",
+                                    style: TextStyle(color: Colors.red)),
+                                onPressed: () => Navigator.pop(context),
+                              ),
+                              FlatButton(
+                                child: Text("Confirmar"),
+                                onPressed: () {
+                                  _homeBloc.logout();
+                                  Navigator.pop(context);
+                                  Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => LoginScreen()));
+                                },
+                              )
+                            ],
+                          );
+                        });
                   },
                 )
               ],

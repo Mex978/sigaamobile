@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sigaamobile/screens/login/login_bloc.dart';
+import 'package:sigaamobile/shared/utils.dart';
 
 class HomeBloc extends BlocBase {
   ///Declarations
@@ -33,7 +34,7 @@ class HomeBloc extends BlocBase {
 
   logout() {
     _user = {};
-    _userController.add(_user);
+    saveDataUser(null, null);
   }
 
   @override
