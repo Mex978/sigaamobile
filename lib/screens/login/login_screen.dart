@@ -101,7 +101,11 @@ class _LoginScreenState extends State<LoginScreen> {
       onChanged: (content) => onChanged(content),
       obscureText: isPassword,
       focusNode: label == "Usuário" ? _userFocusNode : _passFocusNode,
-      decoration: InputDecoration(labelText: label),
+      decoration: InputDecoration(
+          labelText: label,
+          hintText: label == "Usuário"
+              ? "Digite o seu ${label.toLowerCase()}"
+              : "Digite sua ${label.toLowerCase()}"),
       validator: (content) {
         if (content.isEmpty) {
           return "Insira ${label == "Usuário" ? "seu usuário" : "sua senha"}";
