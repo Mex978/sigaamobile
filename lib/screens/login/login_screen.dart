@@ -94,7 +94,10 @@ class _LoginScreenState extends State<LoginScreen> {
     return TextField(
       onChanged: (content) => onChanged(content),
       obscureText: isPassword,
-      decoration: InputDecoration(labelText: label),
+      decoration: InputDecoration(
+          labelText: label,
+          hintText:
+              label == "Usuário" ? "Digite o seu $label" : "Digite sua $label"),
     );
   }
 
