@@ -31,6 +31,11 @@ class HomeBloc extends BlocBase {
     _userController.add(_user);
   }
 
+  logout() {
+    _user = {};
+    _userController.add(_user);
+  }
+
   @override
   void dispose() {
     _userController.close();

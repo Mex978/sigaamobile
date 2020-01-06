@@ -1,3 +1,4 @@
+import 'package:sigaamobile/screens/login/login_screen.dart';
 import 'package:sigaamobile/screens/minhas_notas/minhas_notas_screen.dart';
 
 import 'index.dart';
@@ -41,6 +42,20 @@ class _HomeScreenState extends State<HomeScreen> {
                             builder: (context) => MinhasNotasScreen()));
                   },
                 ),
+                ListTile(
+                  enabled: true,
+                  leading: Icon(Icons.exit_to_app, color: Colors.red),
+                  title: Text(
+                    "Logout",
+                    style: TextStyle(color: Colors.red),
+                  ),
+                  onTap: () {
+                    Navigator.pop(context);
+                    _homeBloc.logout();
+                    Navigator.pushReplacement(context,
+                        MaterialPageRoute(builder: (context) => LoginScreen()));
+                  },
+                )
               ],
             ),
           ),
@@ -49,7 +64,6 @@ class _HomeScreenState extends State<HomeScreen> {
           stream: _homeBloc.outUser,
           builder: ((context, snapshot) {
             if (snapshot.data == {} || snapshot.data == null) {
-              print("Dados: ${snapshot.data}");
               return Center(
                 child: CircularProgressIndicator(),
               );
