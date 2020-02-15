@@ -12,25 +12,10 @@ class _LoginScreenState extends State<LoginScreen> {
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   FocusNode _userFocusNode = FocusNode();
   FocusNode _passFocusNode = FocusNode();
-  LoginBloc _loginBloc;
-  String _user;
-  String _pass;
 
   @override
   void initState() {
-    _loginBloc = BlocProvider.getBloc<LoginBloc>();
-    _listener();
     super.initState();
-  }
-
-  _listener() {
-    _loginBloc.outState.listen((state) {
-      print(state);
-      if (state == RequestState.SUCCESS) {
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => HomeScreen()));
-      }
-    });
   }
 
   @override
@@ -53,17 +38,17 @@ class _LoginScreenState extends State<LoginScreen> {
                     _divider(100),
                     _input(
                         onChanged: (content) {
-                          setState(() {
-                            _user = content;
-                          });
+                          // setState(() {
+                          //   _user = content;
+                          // });
                         },
                         label: "Usuário"),
                     _divider(16),
                     _input(
                         onChanged: (content) {
-                          setState(() {
-                            _pass = content;
-                          });
+                          // setState(() {
+                          //   _pass = content;
+                          // });
                         },
                         label: "Senha",
                         isPassword: true),
@@ -71,7 +56,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     Padding(
                         padding: EdgeInsets.only(bottom: 16),
                         child: StreamBuilder<RequestState>(
-                          stream: _loginBloc.outState,
                           builder: ((context, snapshot) {
                             switch (snapshot.data) {
                               case RequestState.LOADING:
@@ -150,7 +134,6 @@ class _LoginScreenState extends State<LoginScreen> {
   _fazerLogin() {
     if (_formKey.currentState.validate()) {
       FocusScope.of(context).requestFocus(FocusNode());
-      _loginBloc.login(_user, _pass);
     }
   }
 }

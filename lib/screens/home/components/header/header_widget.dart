@@ -14,6 +14,7 @@ class HeaderWidget extends StatelessWidget {
     return SliverAppBar(
         expandedHeight: 150.0,
         floating: false,
+        elevation: 0,
         pinned: true,
         leading: _leanding(context),
         actions: _actions(context),
@@ -36,7 +37,7 @@ class HeaderWidget extends StatelessWidget {
           _showPerfilImage(context);
         },
         child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 5),
+          padding: EdgeInsets.only(top: 5, bottom: 5, right: 15),
           child: CircleAvatar(
             backgroundImage: NetworkImage(url),
             minRadius: 23,
@@ -50,8 +51,11 @@ class HeaderWidget extends StatelessWidget {
     return FlexibleSpaceBar(
         collapseMode: CollapseMode.parallax,
         centerTitle: true,
-        title:
-            Text("${capitalize(name[0])} ${capitalize(name[name.length - 1])}"),
+        title: Text(
+          "${capitalize(name[0])} ${capitalize(name[name.length - 1])}",
+          style:
+              TextStyle(shadows: [Shadow(color: Colors.black, blurRadius: 5)]),
+        ),
         background: Container(
           decoration: BoxDecoration(
             image: DecorationImage(

@@ -1,26 +1,31 @@
-import 'package:sigaamobile/screens/minhas_notas/minhas_notas_bloc.dart';
+import 'package:oktoast/oktoast.dart';
 
+import 'screens/home/home_screen.dart';
 import 'index.dart';
 
-void main() => runApp(GestureDetector(
-      onTap: () {
-        hideKeyboard();
-      },
-      child: BlocProvider(
-        blocs: [
-          Bloc((i) => LoginBloc()),
-          Bloc((i) => HomeBloc()),
-          Bloc((i) => MinhasNotasBloc())
-        ],
-        dependencies: [Dependency((i) => ApiRepository())],
-        child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          theme: themeDefault(),
-          home: SplashScreen(),
-        ),
-      ),
-    ));
+void main() => runApp(OKToast(child: MyApp()));
 
-hideKeyboard() {
-  SystemChannels.textInput.invokeMethod('TextInput.hide');
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        statusBarIconBrightness: Brightness.dark));
+    return GestureDetector(
+      onTap: () {
+        hideKeyboard(context);
+      },
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: themeDefault(),
+        home: HomeScreen(),
+        // home: SplashScreen(),
+      ),
+    );
+  }
+
+  hideKeyboard(BuildContext context) {
+    FocusScope.of(context).requestFocus(FocusNode());
+    SystemChannels.textInput.invokeMethod('TextInput.hide');
+  }
 }

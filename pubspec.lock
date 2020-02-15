@@ -128,6 +128,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.1.1"
+  oktoast:
+    dependency: "direct main"
+    description:
+      name: oktoast
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.3.1"
   path:
     dependency: transitive
     description:

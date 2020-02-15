@@ -36,11 +36,12 @@ class _NotasViewState extends State<NotasView>
                 itemBuilder: (context, index) {
                   var disciplina = item['disciplinas'][index];
                   return ExpansionTile(
-                    backgroundColor: disciplina["situacao"] != null
+                    backgroundColor: disciplina["situacao"] != null &&
+                            disciplina["situacao"] != "--"
                         ? disciplina["situacao"] == "AM"
                             ? Color.fromRGBO(119, 221, 119, 0.4)
-                            : Color.fromRGBO(255, 0, 0, 0.6)
-                        : Color.fromRGBO(0, 0, 0, 0.4),
+                            : Color.fromRGBO(255, 0, 0, 0.4)
+                        : Color.fromRGBO(0, 0, 0, 0.2),
                     title: Text("${disciplina["disciplina"]}"),
                     subtitle: Text(
                       "${disciplina["codigo"]}",
@@ -77,7 +78,7 @@ class _NotasViewState extends State<NotasView>
         //     color: Colors.white, borderRadius: BorderRadius.circular(4)),
         child: ListTile(
           title: Text(labelName),
-          subtitle: disciplina[key] != null
+          subtitle: disciplina[key] != null && disciplina[key] != "--"
               ? (key.toString().contains("unidade") ||
                       key.toString().contains("resultado") ||
                       key.toString().contains("prova_final"))
