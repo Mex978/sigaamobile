@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 
 themeDefault() {
   return ThemeData(
+      scaffoldBackgroundColor: Color(0xFFFEFCB9),
+      // brightness: Brightness.dark,
+      appBarTheme: AppBarTheme(color: Color(0xFF152F94)),
 
       ///Transição de telas
       pageTransitionsTheme: PageTransitionsTheme(builders: {

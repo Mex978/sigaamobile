@@ -4,20 +4,22 @@ import 'package:sigaamobile/shared/utils.dart';
 
 class HeaderWidget extends StatelessWidget {
   final String url;
+  final String title;
   final List<String> name;
   final String course;
 
-  HeaderWidget({@required this.url, @required this.name, this.course});
+  HeaderWidget({@required this.url, this.name, this.course, this.title});
 
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
+        backgroundColor: Color(0xFF152F94),
         expandedHeight: 150.0,
         floating: false,
         elevation: 0,
         pinned: true,
         leading: _leanding(context),
-        actions: _actions(context),
+        // actions: _actions(context),
         flexibleSpace: _flexibleSpace(context));
   }
 
@@ -51,11 +53,13 @@ class HeaderWidget extends StatelessWidget {
     return FlexibleSpaceBar(
         collapseMode: CollapseMode.parallax,
         centerTitle: true,
-        title: Text(
-          "${capitalize(name[0])} ${capitalize(name[name.length - 1])}",
-          style:
-              TextStyle(shadows: [Shadow(color: Colors.black, blurRadius: 5)]),
-        ),
+        title: name == null
+            ? Text(title)
+            : Text(
+                "${capitalize(name[0])} ${capitalize(name[name.length - 1])}",
+                style: TextStyle(
+                    shadows: [Shadow(color: Colors.black, blurRadius: 5)]),
+              ),
         background: Container(
           decoration: BoxDecoration(
             image: DecorationImage(
