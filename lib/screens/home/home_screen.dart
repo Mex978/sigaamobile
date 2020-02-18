@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get_it/get_it.dart';
 import 'package:sigaamobile/consts/request_state.dart';
 import 'package:sigaamobile/controllers/user_controller.dart';
@@ -8,6 +9,7 @@ import 'package:sigaamobile/screens/disciplina/disciplina_screen.dart';
 import 'package:sigaamobile/screens/home/components/drawer/drawer_widget.dart';
 import 'package:sigaamobile/shared/scroll_behavior.dart';
 import 'package:sigaamobile/shared/utils.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class HomeScreen extends StatefulWidget {
   final String title;
@@ -229,17 +231,27 @@ class _HomeScreenState extends State<HomeScreen> {
           left: 50,
           right: 50,
           child: Container(
-            alignment: Alignment.center,
-            child: Container(
-              decoration: BoxDecoration(boxShadow: [
-                BoxShadow(color: Color.fromRGBO(0, 0, 0, 0.4), blurRadius: 10)
-              ], borderRadius: BorderRadius.circular(60)),
-              child: CircleAvatar(
-                backgroundImage: NetworkImage(_user.imagem),
-                radius: 60,
-              ),
-            ),
-          ),
+              alignment: Alignment.center,
+              child: Container(
+                decoration: BoxDecoration(boxShadow: [
+                  BoxShadow(color: Color.fromRGBO(0, 0, 0, 0.4), blurRadius: 10)
+                ], borderRadius: BorderRadius.circular(60)),
+                child: CircleAvatar(
+                  backgroundColor: Colors.transparent,
+                  child: Stack(
+                    children: <Widget>[
+                      SvgPicture.asset("lib/assets/user.svg"),
+                      if (_user.imagem != null)
+                        CircleAvatar(
+                          backgroundColor: Colors.transparent,
+                          backgroundImage: NetworkImage(_user.imagem),
+                          radius: 60,
+                        ),
+                    ],
+                  ),
+                  radius: 60,
+                ),
+              )),
         ),
         Positioned(
           top: (MediaQuery.of(context).size.height / 7) - 22,
