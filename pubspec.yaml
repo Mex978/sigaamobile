@@ -62,6 +62,10 @@ flutter:
     - lib/assets/ufpi_logo.png
     - lib/assets/pikachu.svg
     - lib/assets/user.svg
+    - lib/assets/max.png
+    - lib/assets/jp.png
+    - lib/assets/twitter.svg
+    - lib/assets/github.svg
   #  - images/a_dot_burr.jpeg
   #  - images/a_dot_ham.jpeg
 

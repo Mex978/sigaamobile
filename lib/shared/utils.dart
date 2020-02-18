@@ -1,46 +1,46 @@
-import 'package:shared_preferences/shared_preferences.dart';
+// import 'package:shared_preferences/shared_preferences.dart';
 
-capitalize(String s) => s[0].toUpperCase() + s.substring(1);
+// capitalize(String s) => s[0].toUpperCase() + s.substring(1);
 
-firstLetterCapitalized(String s) {
-  String stringTemp = s[0].toUpperCase() + s.substring(1).toLowerCase();
-  String string = "";
-  List<String> aux = stringTemp.split(" ");
-  for (String s in aux) {
-    if (s == "i" ||
-        s == "ii" ||
-        s == "iii" ||
-        s == "iv" ||
-        s == "v" ||
-        s == "vi" ||
-        s == "vii")
-      string += s.toUpperCase() + " ";
-    else {
-      string += s + " ";
-    }
-  }
-  return string;
-}
+// firstLetterCapitalized(String s) {
+//   String stringTemp = s[0].toUpperCase() + s.substring(1).toLowerCase();
+//   String string = "";
+//   List<String> aux = stringTemp.split(" ");
+//   for (String s in aux) {
+//     if (s == "i" ||
+//         s == "ii" ||
+//         s == "iii" ||
+//         s == "iv" ||
+//         s == "v" ||
+//         s == "vi" ||
+//         s == "vii")
+//       string += s.toUpperCase() + " ";
+//     else {
+//       string += s + " ";
+//     }
+//   }
+//   return string;
+// }
 
-Future<Map<String, String>> getDataUser() async {
-  print("Get data");
-  SharedPreferences _preferences = await SharedPreferences.getInstance();
+// Future<Map<String, String>> getDataUser() async {
+//   print("Get data");
+//   SharedPreferences _preferences = await SharedPreferences.getInstance();
 
-  final String _user = _preferences.getString("user");
-  final String _pass = _preferences.getString("pass");
-  if (_user == null || _pass == null) {
-    return null;
-  } else {
-    return {"user": _user, "pass": _pass};
-  }
-}
+//   final String _user = _preferences.getString("user");
+//   final String _pass = _preferences.getString("pass");
+//   if (_user == null || _pass == null) {
+//     return null;
+//   } else {
+//     return {"user": _user, "pass": _pass};
+//   }
+// }
 
-saveDataUser(String user, String pass) async {
-  SharedPreferences _preferences = await SharedPreferences.getInstance();
+// saveDataUser(String user, String pass) async {
+//   SharedPreferences _preferences = await SharedPreferences.getInstance();
 
-  _preferences.setString("user", user);
-  _preferences.setString("pass", pass);
-}
+//   _preferences.setString("user", user);
+//   _preferences.setString("pass", pass);
+// }
 
 Map parserDate = {
   "1": "Dom",
@@ -76,15 +76,6 @@ Map parserTime = {
     "4": ["21", "22"]
   }
 };
-// ignore: non_constant_identifier_names
-List<String> date_parser(String s) {
-  // return [s];
-  List<String> _lista = [];
-  // ignore: non_constant_identifier_names
-  List<String> _list_strings = s.split(" ");
-  for (String string in _list_strings) _lista.add(function(string));
-  return _lista;
-}
 
 bool isNumeric(String s) {
   if (s == null) {
@@ -98,33 +89,47 @@ bool isNumeric(String s) {
   }
 }
 
+// ignore: non_constant_identifier_names
+String date_parser(String s) {
+  List<String> _lista = [], _listStrings = s.split(" ");
+  for (String string in _listStrings) {
+    if (string.replaceAll(" ", "") != "") _lista.add(function(string));
+  }
+  String _result;
+  for (String item in _lista) {
+    if (_result == null)
+      _result = item;
+    else if (item == _lista.last)
+      _result += " e $item";
+    else
+      _result += ", $item";
+  }
+  return _result;
+}
+
 String function(String s) {
   String _string = s.toUpperCase();
 
-  List _turn;
-  List days = [];
-  List times = [];
+  List _turn, days = [], times = [];
 
-  for (int i = 0; i < _string.length; i++) {
-    String _letter = _string[i];
-    if (!isNumeric(_letter)) {
-      _turn = _letter == "M"
+  for (String letter in _string.split("")) {
+    if (!isNumeric(letter)) {
+      _turn = letter == "M"
           ? ["M", "Manhã"]
-          : _letter == "T" ? ["T", "Tarde"] : ["N", "Noite"];
+          : letter == "T" ? ["T", "Tarde"] : ["N", "Noite"];
+      _string = _string.replaceAll(letter, " ");
       break;
     }
   }
 
-  _string =
-      _string.replaceAll("M", " ").replaceAll("T", " ").replaceAll("N", " ");
-  // ignore: non_constant_identifier_names
-  List<String> list_string = _string.split(" ");
-  for (int i = 0; i < list_string[0].length; i++)
-    days.add(parserDate[list_string[0][i]]);
+  List<String> listString = _string.split(" ");
 
-  for (int i = 0; i < list_string[1].length; i++) {
-    times.add(parserTime[_turn[0]][list_string[1][i]]);
-  }
+  listString[0].split("").forEach((letter) => days.add(parserDate[letter]));
+  listString[1]
+      .split("")
+      .forEach((letter) => times.add(parserTime[_turn[0]][letter]));
+
+  times.sort((a, b) => int.parse(a[0]).compareTo(int.parse(b[0])));
 
   String _day = "";
   for (String day in days) {
@@ -133,7 +138,10 @@ String function(String s) {
     else
       _day += day + ", ";
   }
-  String _time = "${times[0][0]}:00 às ${times.last[1]}:00";
 
-  return "$_day de $_time";
+  return "$_day de ${times[0][0]}:00 às ${times.last[1]}:00";
+}
+
+void main() {
+  print(date_parser("6T65"));
 }

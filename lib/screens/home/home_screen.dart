@@ -46,7 +46,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   _body() {
-    final _userController = GetIt.I.get<UserController>();
     User _user = _userController.user;
     final _name = _user.nome.toLowerCase().split(" ");
     final _info = {
@@ -133,6 +132,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                           key == "form_acessarTurmaVirtual")
                                         return Container();
                                       return Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: <Widget>[
                                           Text(
                                             "${capitalize(key)}: ",
@@ -145,7 +146,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                               child: Text(
                                                   key == "horario"
                                                       ? date_parser(
-                                                          item.toJson()[key])[0]
+                                                          item.toJson()[key])
                                                       : item.toJson()[key],
                                                   style: TextStyle(
                                                       fontSize: 12,
