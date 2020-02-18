@@ -54,6 +54,7 @@ abstract class _UserControllerBase with Store {
     await _api.login(userTemp, passTemp).then((json) async {
       user = User.fromJson(json);
       await saveDataUser(userTemp, passTemp);
+      disciplinas.clear();
       await _loadDisciplinas();
       stateLogin = RequestState.SUCCESS;
     }).catchError((e) {
