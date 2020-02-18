@@ -25,6 +25,12 @@ abstract class _UserControllerBase with Store {
 
   final _api = GetIt.I.get<ApiRepository>();
 
+  recoverUser() async {
+    final Map<String, String> _credentials = await getDataUser();
+    if (_credentials != null)
+      login(userTemp: _credentials["user"], passTemp: _credentials["pass"]);
+  }
+
   @action
   login({String userTemp, String passTemp}) async {
     stateLogin = RequestState.LOADING;
@@ -53,5 +59,10 @@ abstract class _UserControllerBase with Store {
       notas.add(Nota.fromJson(json));
     }
     stateLogin = RequestState.SUCCESS;
+  }
+
+  logout() {
+    user = null;
+    saveDataUser(null, null);
   }
 }

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
+import 'package:sigaamobile/consts/request_state.dart';
 import 'package:sigaamobile/controllers/user_controller.dart';
 import 'package:sigaamobile/models/user_model.dart';
 import 'package:sigaamobile/screens/disciplina/disciplina_screen.dart';
@@ -18,6 +20,13 @@ class _HomeScreenState extends State<HomeScreen> {
   bool aux = false;
   bool parameter = false;
   final GlobalKey<ScaffoldState> _scaffoldState = GlobalKey<ScaffoldState>();
+  final _userController = GetIt.I.get<UserController>();
+
+  @override
+  void initState() {
+    _userController.stateLogin = RequestState.IDLE;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +34,13 @@ class _HomeScreenState extends State<HomeScreen> {
       key: _scaffoldState,
       backgroundColor: Colors.white,
       drawer: CustomDrawer(),
-      body: _body(),
+      body: Observer(
+        builder: (_) {
+          if (_userController.user == null)
+            return Center(child: CircularProgressIndicator());
+          return _body();
+        },
+      ),
     );
   }
 

@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get_it/get_it.dart';
 import 'package:oktoast/oktoast.dart';
+import 'package:sigaamobile/controllers/user_controller.dart';
 import 'package:sigaamobile/screens/lista_disciplinas/lista_disciplinas.dart';
 import 'package:sigaamobile/screens/login/login_screen.dart';
 import 'package:sigaamobile/screens/minhas_notas/minhas_notas_screen.dart';
 import 'package:sigaamobile/services/mocked_data.dart';
 
 class CustomDrawer extends StatelessWidget {
+  final UserController _userController = GetIt.I.get<UserController>();
   final List<Map> options = [
     {"name": "Minhas notas", "icon": "lib/assets/list.svg"},
     {"name": "Calendário acadêmico", "icon": "lib/assets/calendar.svg"},
@@ -151,6 +154,7 @@ class CustomDrawer extends StatelessWidget {
                                     FlatButton(
                                       child: Text("Confirmar"),
                                       onPressed: () {
+                                        _userController.logout();
                                         Navigator.pop(context);
                                         Navigator.pushReplacement(
                                             context,

@@ -7,16 +7,19 @@ import 'package:sigaamobile/screens/login/login_screen.dart';
 import 'package:sigaamobile/shared/logo.dart';
 
 class SplashScreen extends StatelessWidget {
-  final _user = GetIt.I.get<UserController>();
+  final _userController = GetIt.I.get<UserController>();
   @override
   Widget build(BuildContext context) {
     Future.delayed(Duration(seconds: 1), () {
-      Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-              settings: RouteSettings(isInitialRoute: true),
-              builder: (context) =>
-                  _user.user != null ? HomeScreen() : LoginScreen()));
+      _userController.recoverUser().then((_) {
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                settings: RouteSettings(isInitialRoute: true),
+                builder: (context) => _userController.user != null
+                    ? HomeScreen()
+                    : LoginScreen()));
+      });
     });
 
     return Scaffold(
