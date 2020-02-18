@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sigaamobile/shared/components/custom_app_bar.dart';
 
 class DisciplinaScreen extends StatelessWidget {
   final String disciplina;
@@ -7,11 +8,6 @@ class DisciplinaScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        // backgroundColor: Theme.of(context).primaryColor,
-        title: Text(disciplina),
-      ),
-    );
+    return Scaffold(appBar: customAppBar(title: Text(disciplina)));
   }
 }
