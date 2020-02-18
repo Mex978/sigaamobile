@@ -1,10 +1,16 @@
 import 'package:dio/dio.dart';
+import 'package:sigaamobile/services/custom_interceptor.dart';
 import 'package:sigaamobile/shared/utils.dart';
 
 class ApiRepository {
   Dio _dio = Dio(BaseOptions(
-      baseUrl: "http://sigaa-api.herokuapp.com",
-      responseType: ResponseType.json));
+    baseUrl: "http://sigaa-api.herokuapp.com",
+    responseType: ResponseType.json,
+  ));
+
+  ApiRepository() {
+    _dio.interceptors.add(CustomInterceptor());
+  }
 
   Future<Map<String, dynamic>> login(String user, String pass) async {
     final response = await _dio.post('/info',
