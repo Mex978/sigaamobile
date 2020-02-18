@@ -10,16 +10,19 @@ class SplashScreen extends StatelessWidget {
   final _userController = GetIt.I.get<UserController>();
   @override
   Widget build(BuildContext context) {
-    Future.delayed(Duration(seconds: 1), () {
-      _userController.recoverUser().then((_) {
-        Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-                settings: RouteSettings(isInitialRoute: true),
-                builder: (context) => _userController.user != null
-                    ? HomeScreen()
-                    : LoginScreen()));
-      });
+    _userController.recoverUser().then((isSuccess) {
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) => isSuccess ? HomeScreen() : LoginScreen()));
+    });
+
+    Future.delayed(Duration(seconds: 2), () {
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) =>
+                  _userController.user == null ? LoginScreen() : HomeScreen()));
     });
 
     return Scaffold(

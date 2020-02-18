@@ -25,10 +25,18 @@ abstract class _UserControllerBase with Store {
 
   final _api = GetIt.I.get<ApiRepository>();
 
-  recoverUser() async {
+  Future<bool> recoverUser() async {
     final Map<String, String> _credentials = await getDataUser();
-    if (_credentials != null)
+    if (_credentials != null) {
       login(userTemp: _credentials["user"], passTemp: _credentials["pass"]);
+      if (stateLogin != RequestState.ERROR) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
   }
 
   @action
