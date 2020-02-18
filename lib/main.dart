@@ -8,9 +8,13 @@ void main() => runApp(OKToast(child: MyApp()));
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
-        statusBarIconBrightness: Brightness.dark));
+        statusBarIconBrightness: Brightness.light));
     return GestureDetector(
       onTap: () {
         hideKeyboard(context);

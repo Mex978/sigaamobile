@@ -142,5 +142,5 @@ String function(String s) {
   print("----------------------------------");
   String _time = "${times[0][0]}:00 às ${times.last[1]}:00";
 
-  return "$_day pela ${_turn[1]} de $_time";
+  return "$_day de $_time";
 }

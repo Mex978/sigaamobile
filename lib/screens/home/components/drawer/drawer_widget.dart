@@ -10,45 +10,55 @@ class CustomDrawer extends StatelessWidget {
   final List<Map> options = [
     {"name": "Minhas notas", "icon": "lib/assets/list.svg"},
     {"name": "Calendário acadêmico", "icon": "lib/assets/calendar.svg"},
-    {"name": "Atestado de matrícula", "icon": "lib/assets/certificate.svg"}
+    {"name": "Atestado de matrícula", "icon": "lib/assets/certificate.svg"},
+    {"name": "Créditos", "icon": "lib/assets/pikachu.svg"}
   ];
   @override
   Widget build(BuildContext context) {
     return Drawer(
       child: Container(
-        color: Color(0xFF2B6FD9),
-        padding: EdgeInsets.only(top: 40),
+        color: Color.fromRGBO(0, 0, 0, 0),
+        // padding: EdgeInsets.only(top: 40),
         child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               Container(
-                alignment: Alignment.center,
-                child: Column(
+                decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                        colors: [Color(0xFF19C2D7), Color(0xFF0E98D9)])),
+                // alignment: Alignment.center,
+                padding:
+                    EdgeInsets.only(left: 16, right: 16, top: 30, bottom: 20),
+                child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     CircleAvatar(
-                      backgroundImage: NetworkImage(userMockado["imagem"]),
-                      radius: 50,
+                      backgroundImage: AssetImage("lib/assets/ufpi_logo.png"),
+                      radius: 40,
                     ),
                     SizedBox(
                       width: 15,
                     ),
-                    Text(
-                      "Max Lima",
-                      style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.white),
-                    ),
-                    // Text(
-                    //   "max.lima2@gmail.com",
-                    //   style: TextStyle(fontSize: 12, color: Colors.white),
-                    // ),
-                    // Text(
-                    //   "Ciência da Computação",
-                    //   style: TextStyle(fontSize: 12, color: Colors.white),
-                    // )
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          "SIGAA Mobile",
+                          style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white),
+                        ),
+                        Text(
+                          "Universidade Federal do Piauí",
+                          style: TextStyle(
+                              fontSize: 10,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white60),
+                        ),
+                      ],
+                    )
                   ],
                 ),
               ),
@@ -98,8 +108,8 @@ class CustomDrawer extends StatelessWidget {
                                 title: Text(
                                   item["name"],
                                   style: TextStyle(shadows: [
-                                    Shadow(blurRadius: 5, color: Colors.black)
-                                  ], color: Colors.white),
+                                    // Shadow(blurRadius: 5, color: Colors.black)
+                                  ], color: Colors.blue),
                                 ),
                                 leading: Container(
                                   child: SvgPicture.asset(item["icon"]),
@@ -110,7 +120,7 @@ class CustomDrawer extends StatelessWidget {
                               margin: EdgeInsets.symmetric(horizontal: 5),
                               width: double.infinity,
                               height: 1,
-                              color: Colors.white12,
+                              color: Colors.black12,
                             )
                           ],
                         ),
@@ -159,11 +169,11 @@ class CustomDrawer extends StatelessWidget {
                           title: Text(
                             "Logout",
                             style: TextStyle(
-                                color: Colors.red,
-                                shadows: [
-                                  Shadow(blurRadius: 2, color: Colors.black)
-                                ],
-                                fontWeight: FontWeight.w600),
+                              color: Colors.red,
+                              // shadows: [
+                              //   Shadow(blurRadius: 2, color: Colors.black)
+                              // ],
+                            ),
                           ),
                         ),
                       ),
