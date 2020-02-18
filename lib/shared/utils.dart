@@ -76,10 +76,11 @@ Map parserTime = {
     "4": ["21", "22"]
   }
 };
-
+// ignore: non_constant_identifier_names
 List<String> date_parser(String s) {
   // return [s];
   List<String> _lista = [];
+  // ignore: non_constant_identifier_names
   List<String> _list_strings = s.split(" ");
   for (String string in _list_strings) _lista.add(function(string));
   return _lista;
@@ -99,7 +100,6 @@ bool isNumeric(String s) {
 
 String function(String s) {
   String _string = s.toUpperCase();
-  print(s);
 
   List _turn;
   List days = [];
@@ -117,16 +117,12 @@ String function(String s) {
 
   _string =
       _string.replaceAll("M", " ").replaceAll("T", " ").replaceAll("N", " ");
+  // ignore: non_constant_identifier_names
   List<String> list_string = _string.split(" ");
-  print("check 1");
-  print(list_string);
-  print(_string);
   for (int i = 0; i < list_string[0].length; i++)
     days.add(parserDate[list_string[0][i]]);
 
   for (int i = 0; i < list_string[1].length; i++) {
-    print("key: ${_turn[0]}");
-    print("second key: ${list_string[1][i]}");
     times.add(parserTime[_turn[0]][list_string[1][i]]);
   }
 
@@ -137,9 +133,6 @@ String function(String s) {
     else
       _day += day + ", ";
   }
-  // String _day = ", ".join([day for day in days]);
-  print(times);
-  print("----------------------------------");
   String _time = "${times[0][0]}:00 às ${times.last[1]}:00";
 
   return "$_day de $_time";

@@ -1,4 +1,3 @@
-export 'package:bloc_pattern/bloc_pattern.dart';
 export 'package:flutter/material.dart';
 export 'package:sigaamobile/screens/splash/splash_screen.dart';
 export 'package:sigaamobile/services/api_repository.dart';

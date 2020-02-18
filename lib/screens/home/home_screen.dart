@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:sigaamobile/controllers/user_controller.dart';
+import 'package:sigaamobile/models/user_model.dart';
 import 'package:sigaamobile/screens/disciplina/disciplina_screen.dart';
 import 'package:sigaamobile/screens/home/components/drawer/drawer_widget.dart';
-import 'package:sigaamobile/services/mocked_data.dart';
 import 'package:sigaamobile/shared/scroll_behavior.dart';
 import 'package:sigaamobile/shared/utils.dart';
 
@@ -16,12 +18,7 @@ class _HomeScreenState extends State<HomeScreen> {
   bool aux = false;
   bool parameter = false;
   final GlobalKey<ScaffoldState> _scaffoldState = GlobalKey<ScaffoldState>();
-  final _name = userMockado["nome"].toLowerCase().split(" ");
-  final info = {
-    "IRA": userMockado["ira"],
-    "Matrícula": userMockado["matricula"],
-    "Período": userMockado["periodo"]
-  };
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,6 +30,14 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   _body() {
+    final _userController = GetIt.I.get<UserController>();
+    User _user = _userController.user;
+    final _name = _user.nome.toLowerCase().split(" ");
+    final _info = {
+      "IRA": _user.ira,
+      "Matrícula": _user.matricula,
+      "Período": _user.semestre
+    };
     return Stack(
       children: <Widget>[
         Column(
@@ -64,7 +69,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 16),
                         )),
-                  ]..addAll(userMockado["disciplinas"].map<Widget>((item) {
+                  ]..addAll(_userController.disciplinas.map<Widget>((item) {
                       return Container(
                         margin: EdgeInsets.only(bottom: 15),
                         decoration: BoxDecoration(
@@ -90,7 +95,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   MaterialPageRoute(
                                       builder: (_) => DisciplinaScreen(
                                             disciplina: firstLetterCapitalized(
-                                                item["componente_curricular"]),
+                                                item.componenteCurricular),
                                           )));
                             },
                             child: Padding(
@@ -99,13 +104,14 @@ class _HomeScreenState extends State<HomeScreen> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
-                                  Text(item["componente_curricular"],
+                                  Text(item.componenteCurricular,
                                       overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
                                           color: Colors.white,
                                           fontWeight: FontWeight.w600)),
                                   Column(
-                                    children: item.keys.map<Widget>((key) {
+                                    children:
+                                        item.toJson().keys.map<Widget>((key) {
                                       if (key == "componente_curricular" ||
                                           key == "class_id" ||
                                           key == "form_acessarTurmaVirtual")
@@ -123,8 +129,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                               child: Text(
                                                   key == "horario"
                                                       ? date_parser(
-                                                          item[key])[0]
-                                                      : item[key],
+                                                          item.toJson()[key])[0]
+                                                      : item.toJson()[key],
                                                   style: TextStyle(
                                                       fontSize: 12,
                                                       color: Colors.white)))
@@ -173,7 +179,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     style: TextStyle(color: Color.fromRGBO(0, 0, 0, 0.56))),
                 Expanded(
                   child: Row(
-                      children: info.entries.map((entry) {
+                      children: _info.entries.map((entry) {
                     return Expanded(
                       child: Container(
                         decoration: BoxDecoration(
@@ -214,7 +220,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 BoxShadow(color: Color.fromRGBO(0, 0, 0, 0.4), blurRadius: 10)
               ], borderRadius: BorderRadius.circular(60)),
               child: CircleAvatar(
-                backgroundImage: NetworkImage(userMockado["imagem"]),
+                backgroundImage: NetworkImage(_user.imagem),
                 radius: 60,
               ),
             ),

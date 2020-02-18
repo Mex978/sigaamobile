@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:sigaamobile/models/nota_model.dart';
 import 'package:sigaamobile/shared/utils.dart';
 
 class NotasView extends StatefulWidget {
-  final List<dynamic> data;
+  final List<Nota> data;
 
   @override
   _NotasViewState createState() => _NotasViewState();
@@ -18,13 +19,19 @@ class _NotasViewState extends State<NotasView>
       length: widget.data.length,
       child: Scaffold(
           appBar: AppBar(
+            flexibleSpace: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                                colors: [Color(0xFF19C2D7), Color(0xFF0E98D9)])
+              ),
+            ),
             centerTitle: true,
             title: Text("Minhas Notas"),
             bottom: TabBar(
               isScrollable: true,
               tabs: widget.data.map((item) {
                 return Tab(
-                  child: Text(item["periodo"].toString()),
+                  child: Text(item.periodo.toString()),
                 );
               }).toList(),
             ),
@@ -32,23 +39,24 @@ class _NotasViewState extends State<NotasView>
           body: TabBarView(
             children: widget.data.map((item) {
               return ListView.builder(
-                itemCount: item["disciplinas"].length,
+                itemCount: item.disciplinas.length,
                 itemBuilder: (context, index) {
-                  var disciplina = item['disciplinas'][index];
+                  var disciplina = item.disciplinas[index];
                   return ExpansionTile(
-                    backgroundColor: disciplina["situacao"] != null &&
-                            disciplina["situacao"] != "--"
-                        ? disciplina["situacao"] == "AM"
+                    backgroundColor: disciplina.situacao != null &&
+                            disciplina.situacao != "--"
+                        ? disciplina.situacao == "AM"
                             ? Color.fromRGBO(119, 221, 119, 0.4)
                             : Color.fromRGBO(255, 0, 0, 0.4)
                         : Color.fromRGBO(0, 0, 0, 0.2),
-                    title: Text("${disciplina["disciplina"]}"),
+                    title: Text("${disciplina.disciplina}"),
                     subtitle: Text(
-                      "${disciplina["codigo"]}",
+                      "${disciplina.codigo}",
                       style: TextStyle(color: Color.fromRGBO(0, 0, 0, 0.4)),
                     ),
-                    children: disciplina.keys.map<Widget>((String key) {
-                      return _tileDisciplina(key, disciplina);
+                    children:
+                        disciplina.toJson().keys.map<Widget>((String key) {
+                      return _tileDisciplina(key, disciplina.toJson());
                     }).toList(),
                   );
                 },
@@ -58,7 +66,7 @@ class _NotasViewState extends State<NotasView>
     );
   }
 
-  Widget _tileDisciplina(String key, var disciplina) {
+  Widget _tileDisciplina(String key, Map<String, dynamic> disciplina) {
     String labelName;
     if (key == "prova_final") {
       labelName = "EF";

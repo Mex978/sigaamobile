@@ -1,3 +1,8 @@
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:get_it/get_it.dart';
+import 'package:mobx/mobx.dart';
+import 'package:sigaamobile/controllers/user_controller.dart';
+
 import 'index.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -10,12 +15,31 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final _userController = GetIt.I.get<UserController>();
   FocusNode _userFocusNode = FocusNode();
   FocusNode _passFocusNode = FocusNode();
+  ReactionDisposer _listener;
+  String _user;
+  String _pass;
 
   @override
   void initState() {
+    _listener = autorun((_) {
+      switch (_userController.stateLogin) {
+        case RequestState.SUCCESS:
+          Navigator.pushReplacement(
+              context, MaterialPageRoute(builder: (_) => HomeScreen()));
+          break;
+        default:
+      }
+    });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _listener();
+    super.dispose();
   }
 
   @override
@@ -38,26 +62,26 @@ class _LoginScreenState extends State<LoginScreen> {
                     _divider(100),
                     _input(
                         onChanged: (content) {
-                          // setState(() {
-                          //   _user = content;
-                          // });
+                          setState(() {
+                            _user = content;
+                          });
                         },
                         label: "Usuário"),
                     _divider(16),
                     _input(
                         onChanged: (content) {
-                          // setState(() {
-                          //   _pass = content;
-                          // });
+                          setState(() {
+                            _pass = content;
+                          });
                         },
                         label: "Senha",
                         isPassword: true),
                     _divider(64),
                     Padding(
                         padding: EdgeInsets.only(bottom: 16),
-                        child: StreamBuilder<RequestState>(
-                          builder: ((context, snapshot) {
-                            switch (snapshot.data) {
+                        child: Observer(
+                          builder: (_) {
+                            switch (_userController.stateLogin) {
                               case RequestState.LOADING:
                                 return CircularProgressIndicator();
                               case RequestState.SUCCESS:
@@ -65,7 +89,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               default:
                                 return _buttonLogin();
                             }
-                          }),
+                          },
                         )),
                   ],
                 ),
@@ -134,6 +158,7 @@ class _LoginScreenState extends State<LoginScreen> {
   _fazerLogin() {
     if (_formKey.currentState.validate()) {
       FocusScope.of(context).requestFocus(FocusNode());
+      _userController.login(userTemp: _user, passTemp: _pass);
     }
   }
 }
