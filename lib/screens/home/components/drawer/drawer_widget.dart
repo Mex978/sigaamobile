@@ -160,7 +160,9 @@ class CustomDrawer extends StatelessWidget {
                                             context,
                                             MaterialPageRoute(
                                                 builder: (context) =>
-                                                    LoginScreen()));
+                                                    LoginScreen(),
+                                                settings: RouteSettings(
+                                                    isInitialRoute: true)));
                                       },
                                     )
                                   ],

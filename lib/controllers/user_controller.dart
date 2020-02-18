@@ -21,20 +21,29 @@ abstract class _UserControllerBase with Store {
   ObservableList<Nota> notas = ObservableList<Nota>();
 
   @observable
+  bool recovered;
+
+  @observable
   RequestState stateLogin;
 
   final _api = GetIt.I.get<ApiRepository>();
 
-  Future<bool> recoverUser() async {
+  @action
+  recoverUser() async {
     final Map<String, String> _credentials = await getDataUser();
     if (_credentials != null) {
-      login(userTemp: _credentials["user"], passTemp: _credentials["pass"]);
-      if (stateLogin != RequestState.ERROR) {
-        return true;
-      } else {
-        return false;
-      }
+      return login(
+              userTemp: _credentials["user"], passTemp: _credentials["pass"])
+          .then((_) {
+        if (stateLogin == RequestState.SUCCESS) {
+          return true;
+        } else if (stateLogin != null) {
+          return false;
+        }
+      });
     } else {
+      print("Entrou aqui?");
+      stateLogin = RequestState.ERROR;
       return false;
     }
   }
@@ -42,7 +51,7 @@ abstract class _UserControllerBase with Store {
   @action
   login({String userTemp, String passTemp}) async {
     stateLogin = RequestState.LOADING;
-    _api.login(userTemp, passTemp).then((json) async {
+    await _api.login(userTemp, passTemp).then((json) async {
       user = User.fromJson(json);
       await saveDataUser(userTemp, passTemp);
       await _loadDisciplinas();

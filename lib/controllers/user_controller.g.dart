@@ -60,6 +60,23 @@ mixin _$UserController on _UserControllerBase, Store {
     }, _$notasAtom, name: '${_$notasAtom.name}_set');
   }
 
+  final _$recoveredAtom = Atom(name: '_UserControllerBase.recovered');
+
+  @override
+  bool get recovered {
+    _$recoveredAtom.context.enforceReadPolicy(_$recoveredAtom);
+    _$recoveredAtom.reportObserved();
+    return super.recovered;
+  }
+
+  @override
+  set recovered(bool value) {
+    _$recoveredAtom.context.conditionallyRunInAction(() {
+      super.recovered = value;
+      _$recoveredAtom.reportChanged();
+    }, _$recoveredAtom, name: '${_$recoveredAtom.name}_set');
+  }
+
   final _$stateLoginAtom = Atom(name: '_UserControllerBase.stateLogin');
 
   @override
@@ -77,6 +94,13 @@ mixin _$UserController on _UserControllerBase, Store {
     }, _$stateLoginAtom, name: '${_$stateLoginAtom.name}_set');
   }
 
+  final _$recoverUserAsyncAction = AsyncAction('recoverUser');
+
+  @override
+  Future recoverUser() {
+    return _$recoverUserAsyncAction.run(() => super.recoverUser());
+  }
+
   final _$loginAsyncAction = AsyncAction('login');
 
   @override
@@ -88,7 +112,7 @@ mixin _$UserController on _UserControllerBase, Store {
   @override
   String toString() {
     final string =
-        'user: ${user.toString()},disciplinas: ${disciplinas.toString()},notas: ${notas.toString()},stateLogin: ${stateLogin.toString()}';
+        'user: ${user.toString()},disciplinas: ${disciplinas.toString()},notas: ${notas.toString()},recovered: ${recovered.toString()},stateLogin: ${stateLogin.toString()}';
     return '{$string}';
   }
 }

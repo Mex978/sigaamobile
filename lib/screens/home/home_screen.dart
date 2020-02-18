@@ -9,7 +9,6 @@ import 'package:sigaamobile/screens/disciplina/disciplina_screen.dart';
 import 'package:sigaamobile/screens/home/components/drawer/drawer_widget.dart';
 import 'package:sigaamobile/shared/scroll_behavior.dart';
 import 'package:sigaamobile/shared/utils.dart';
-import 'package:transparent_image/transparent_image.dart';
 
 class HomeScreen extends StatefulWidget {
   final String title;
@@ -169,7 +168,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         Container(
           margin: EdgeInsets.only(
-              left: 16, right: 16, top: MediaQuery.of(context).size.height / 7),
+              left: 12, right: 12, top: MediaQuery.of(context).size.height / 7),
           decoration: BoxDecoration(
               color: Colors.white,
               boxShadow: [
