@@ -58,6 +58,7 @@ abstract class _UserControllerBase with Store {
       await _loadDisciplinas();
       stateLogin = RequestState.SUCCESS;
     }).catchError((e) {
+      print("######### ERRO AQUI");
       stateLogin = RequestState.ERROR;
     });
   }

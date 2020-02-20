@@ -21,9 +21,8 @@ class _NotasViewState extends State<NotasView>
           appBar: AppBar(
             flexibleSpace: Container(
               decoration: BoxDecoration(
-                gradient: LinearGradient(
-                                colors: [Color(0xFF19C2D7), Color(0xFF0E98D9)])
-              ),
+                  gradient: LinearGradient(
+                      colors: [Color(0xFF19C2D7), Color(0xFF0E98D9)])),
             ),
             centerTitle: true,
             title: Text("Minhas Notas"),
@@ -38,29 +37,27 @@ class _NotasViewState extends State<NotasView>
           ),
           body: TabBarView(
             children: widget.data.map((item) {
-              return ListView.builder(
-                itemCount: item.disciplinas.length,
-                itemBuilder: (context, index) {
-                  var disciplina = item.disciplinas[index];
-                  return ExpansionTile(
-                    backgroundColor: disciplina.situacao != null &&
-                            disciplina.situacao != "--"
-                        ? disciplina.situacao == "AM"
-                            ? Color.fromRGBO(119, 221, 119, 0.4)
-                            : Color.fromRGBO(255, 0, 0, 0.4)
-                        : Color.fromRGBO(0, 0, 0, 0.2),
-                    title: Text("${disciplina.disciplina}"),
-                    subtitle: Text(
-                      "${disciplina.codigo}",
-                      style: TextStyle(color: Color.fromRGBO(0, 0, 0, 0.4)),
-                    ),
-                    children:
-                        disciplina.toJson().keys.map<Widget>((String key) {
-                      return _tileDisciplina(key, disciplina.toJson());
-                    }).toList(),
-                  );
-                },
-              );
+              return ListView(
+                  children: item.disciplinas.map<Widget>((disciplina) {
+                return ExpansionTile(
+                  backgroundColor:
+                      disciplina.situacao != null && disciplina.situacao != "--"
+                          ? disciplina.situacao == "AM" ||
+                                  (disciplina.situacao == "EF" &&
+                                      disciplina.resultado != "--")
+                              ? Color.fromRGBO(119, 221, 119, 0.4)
+                              : Color.fromRGBO(255, 0, 0, 0.4)
+                          : Color.fromRGBO(0, 0, 0, 0.2),
+                  title: Text("${disciplina.disciplina}"),
+                  subtitle: Text(
+                    "${disciplina.codigo}",
+                    style: TextStyle(color: Color.fromRGBO(0, 0, 0, 0.4)),
+                  ),
+                  children: disciplina.toJson().keys.map<Widget>((String key) {
+                    return _tileDisciplina(key, disciplina.toJson());
+                  }).toList(),
+                );
+              }).toList());
             }).toList(),
           )),
     );

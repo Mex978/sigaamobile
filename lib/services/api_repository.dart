@@ -18,7 +18,7 @@ class ApiRepository {
       print(e);
     });
     print("Response => $response");
-    return response.data;
+    return response?.data;
   }
 
   Future<List<dynamic>> notas() async {

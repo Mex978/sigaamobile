@@ -37,8 +37,9 @@ class CustomDrawer extends StatelessWidget {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    CircleAvatar(
-                      backgroundImage: AssetImage("lib/assets/ufpi_logo.png"),
+                    const CircleAvatar(
+                      backgroundImage:
+                          const AssetImage("lib/assets/ufpi_logo.png"),
                       radius: 40,
                     ),
                     SizedBox(

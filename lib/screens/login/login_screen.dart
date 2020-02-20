@@ -2,6 +2,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
 import 'package:sigaamobile/controllers/user_controller.dart';
+import 'package:sigaamobile/shared/components/custom_exception.dart';
 
 import 'index.dart';
 
@@ -29,6 +30,12 @@ class _LoginScreenState extends State<LoginScreen> {
         case RequestState.SUCCESS:
           Navigator.pushReplacement(
               context, MaterialPageRoute(builder: (_) => HomeScreen()));
+          break;
+        case RequestState.ERROR:
+          showErroDialog(
+              context: context,
+              content:
+                  "Algum erro ocorreu durante o login, verifique se o sigaa está disponível ou se você já fez a avaliação institucional.");
           break;
         default:
       }
