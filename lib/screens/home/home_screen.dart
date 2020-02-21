@@ -58,15 +58,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    double radius = 60;
     double _expandedHeight = 1.8 * MediaQuery.of(context).size.height / 7;
     User _user = _userController.user;
     final _name = _user.nome.toLowerCase().split(" ");
-    final _info = {
-      "IRA": _user.ira,
-      "Matrícula": _user.matricula,
-      "Período": _user.semestre
-    };
+
     return Scaffold(
       key: _scaffoldState,
       backgroundColor: Colors.white,
@@ -77,6 +72,7 @@ class _HomeScreenState extends State<HomeScreen> {
             return Center(child: CircularProgressIndicator());
 
           double _positionAux = scrollPosition(_expandedHeight);
+          double radius = 20 + 40 * (_positionAux / _expandedHeight);
           return Stack(
             children: <Widget>[
               NestedScrollView(
@@ -122,134 +118,122 @@ class _HomeScreenState extends State<HomeScreen> {
                 },
                 body: _body(),
               ),
-              SafeArea(
-                child: Opacity(
-                  opacity: _positionAux / _expandedHeight,
-                  child: Container(
-                    margin: EdgeInsets.only(
-                        left: 12 * (_positionAux / _expandedHeight),
-                        right: 12 * (_positionAux / _expandedHeight),
-                        top: _positionAux / 2),
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        boxShadow: _positionAux == 0
-                            ? []
-                            : [
-                                BoxShadow(
-                                    color: Color.fromRGBO(0, 0, 0, 0.2),
-                                    blurRadius: 10,
-                                    offset: Offset(
-                                      0.0,
-                                      5.0,
-                                    )),
-                              ],
-                        borderRadius: BorderRadius.circular(
-                            10 * (_positionAux / _expandedHeight))),
-                    height: 2 * MediaQuery.of(context).size.height / 7,
-                    width: MediaQuery.of(context).size.width,
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 70),
-                      child: Column(
-                        children: <Widget>[
-                          Text(
-                            capitalize(_name[0]) + " " + capitalize(_name.last),
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 20),
-                          ),
-                          Visibility(
-                            visible: true,
-                            child: Text("Ciência da Computação",
-                                style: TextStyle(
-                                    color: Color.fromRGBO(0, 0, 0, 0.56))),
-                          ),
-                          Expanded(
-                            child: Row(
-                                children: _info.entries.map((entry) {
-                              return Expanded(
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5)),
-                                  margin: EdgeInsets.only(right: 5),
-                                  padding: EdgeInsets.symmetric(horizontal: 2),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: <Widget>[
-                                      Text(entry.value.toString(),
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 16)),
-                                      Text(entry.key.toUpperCase(),
-                                          style: TextStyle(
-                                              color:
-                                                  Color.fromRGBO(0, 0, 0, 0.48),
-                                              fontWeight: FontWeight.normal,
-                                              fontSize: 14)),
-                                    ],
-                                  ),
-                                ),
-                              );
-                            }).toList()),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              Positioned(
-                top: (scrollPosition(_expandedHeight) / 2) -
-                    radius +
-                    MediaQuery.of(context).padding.top,
-                //  top: -5,
-                left: (MediaQuery.of(context).size.width / 2) - radius,
-                child: Opacity(
-                  opacity: scrollPosition(
-                          1.8 * MediaQuery.of(context).size.height / 7) /
-                      _expandedHeight,
-                  child: Container(
-                      alignment: Alignment.center,
-                      // padding: EdgeInsets.only(left: 50, right: (50.0 + 90)),
-                      child: Container(
-                          decoration: BoxDecoration(boxShadow: [
-                            BoxShadow(
-                                color: Color.fromRGBO(0, 0, 0, 0.4),
-                                blurRadius: 10)
-                          ], borderRadius: BorderRadius.circular(60)),
-                          child: AvatarPerfil(
-                            user: _user,
-                            radius: radius,
-                          ))),
-                ),
-              ),
-              // Positioned(
-              //   top: (MediaQuery.of(context).size.height / 7),
-              //   left: 50,
-              //   child: Container(
-              //     decoration: BoxDecoration(
-              //         borderRadius: BorderRadius.circular(60),
-              //         color: Colors.white),
-              //     child: Material(
-              //       color: Colors.transparent,
-              //       child: InkWell(
-              //         borderRadius: BorderRadius.circular(60),
-              //         onTap: () {
-              //           _scaffoldState.currentState.openDrawer();
-              //         },
-              //         child: Container(
-              //           padding: EdgeInsets.all(10),
-              //           child: Icon(
-              //             Icons.menu,
-              //             color: Color(0xFF19C2D7),
-              //           ),
-              //         ),
-              //       ),
-              //     ),
-              //   ),
-              // )
+              _container(_expandedHeight, _positionAux, _user),
+              _avatar(_user, _expandedHeight, _positionAux, radius)
             ],
           );
         },
+      ),
+    );
+  }
+
+  _avatar(_user, _expandedHeight, _positionAux, radius) {
+    return Positioned(
+      top: (_positionAux / 2) -
+          radius +
+          4 * (1 - (_positionAux / _expandedHeight)) +
+          MediaQuery.of(context).padding.top *
+              (1 - (_positionAux / _expandedHeight)),
+      //  top: -5,
+      // left: (MediaQuery.of(context).size.width / 2) - radius,
+      left: 0,
+      right: 0,
+      child: Opacity(
+        // opacity: scrollPosition(1.8 * MediaQuery.of(context).size.height / 7) /
+        //     _expandedHeight,
+        opacity: 1,
+        child: Container(
+            padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+            alignment:
+                Alignment(-0.70 + 0.7 * (_positionAux / _expandedHeight), 0),
+            // padding: EdgeInsets.only(left: 50, right: (50.0 + 90)),
+            child: Container(
+                decoration: BoxDecoration(boxShadow: [
+                  BoxShadow(color: Color.fromRGBO(0, 0, 0, 0.4), blurRadius: 10)
+                ], borderRadius: BorderRadius.circular(60)),
+                child: AvatarPerfil(
+                  user: _user,
+                  radius: radius,
+                ))),
+      ),
+    );
+  }
+
+  _container(_expandedHeight, _positionAux, _user) {
+    final _name = _user.nome.toLowerCase().split(" ");
+    final _info = {
+      "IRA": _user.ira,
+      "Matrícula": _user.matricula,
+      "Período": _user.semestre
+    };
+    return Opacity(
+      opacity: _positionAux / _expandedHeight,
+      child: Container(
+        margin: EdgeInsets.only(
+            left: 12 * (_positionAux / _expandedHeight),
+            right: 12 * (_positionAux / _expandedHeight),
+            top: _positionAux / 2),
+        decoration: BoxDecoration(
+            color: Colors.white,
+            boxShadow: _positionAux == 0
+                ? []
+                : [
+                    BoxShadow(
+                        color: Color.fromRGBO(0, 0, 0, 0.2),
+                        blurRadius: 10,
+                        offset: Offset(
+                          0.0,
+                          5.0,
+                        )),
+                  ],
+            borderRadius:
+                BorderRadius.circular(10 * (_positionAux / _expandedHeight))),
+        height: 2 * MediaQuery.of(context).size.height / 7,
+        width: MediaQuery.of(context).size.width,
+        child: Padding(
+          padding: const EdgeInsets.only(top: 70),
+          child: Column(
+            children: <Widget>[
+              Text(
+                capitalize(_name[0]) + " " + capitalize(_name.last),
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+              ),
+              Visibility(
+                visible: true,
+                child: Text("Ciência da Computação",
+                    style: TextStyle(color: Color.fromRGBO(0, 0, 0, 0.56))),
+              ),
+              Expanded(
+                child: Row(
+                    children: _info.entries.map((entry) {
+                  return Expanded(
+                    child: Container(
+                      decoration:
+                          BoxDecoration(borderRadius: BorderRadius.circular(5)),
+                      margin: EdgeInsets.only(right: 5),
+                      padding: EdgeInsets.symmetric(horizontal: 2),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text(entry.value.toString(),
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16)),
+                          Text(entry.key.toUpperCase(),
+                              style: TextStyle(
+                                  color: Color.fromRGBO(0, 0, 0, 0.48),
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 14)),
+                        ],
+                      ),
+                    ),
+                  );
+                }).toList()),
+              )
+            ],
+          ),
+        ),
       ),
     );
   }
