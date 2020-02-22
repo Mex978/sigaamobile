@@ -91,7 +91,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       titleSpacing: 0,
                       title: AnimatedOpacity(
-                        opacity: _positionAux == 0 ? 1 : 0,
+                        // opacity: _positionAux == 0 ? 1 : 0,
+                        opacity: 0,
                         duration: Duration(milliseconds: 300),
                         child: Row(
                           children: <Widget>[
@@ -116,7 +117,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     )
                   ];
                 },
-                body: _body(),
+                body: _body(_positionAux, _expandedHeight),
               ),
               _container(_expandedHeight, _positionAux, _user),
               _avatar(_user, _expandedHeight, _positionAux, radius)
@@ -166,15 +167,18 @@ class _HomeScreenState extends State<HomeScreen> {
       "Matrícula": _user.matricula,
       "Período": _user.semestre
     };
-    return Opacity(
-      opacity: _positionAux / _expandedHeight,
+    return IgnorePointer(
+      ignoring: true,
       child: Container(
         margin: EdgeInsets.only(
             left: 12 * (_positionAux / _expandedHeight),
             right: 12 * (_positionAux / _expandedHeight),
-            top: _positionAux / 2),
+            top: scrollPosition(
+                    (_expandedHeight + MediaQuery.of(context).padding.top)) /
+                2),
+        // top: _positionAux / 2),
         decoration: BoxDecoration(
-            color: Colors.white,
+            color: Colors.white.withOpacity(_positionAux / _expandedHeight),
             boxShadow: _positionAux == 0
                 ? []
                 : [
@@ -190,55 +194,64 @@ class _HomeScreenState extends State<HomeScreen> {
                 BorderRadius.circular(10 * (_positionAux / _expandedHeight))),
         height: 2 * MediaQuery.of(context).size.height / 7,
         width: MediaQuery.of(context).size.width,
-        child: Padding(
-          padding: const EdgeInsets.only(top: 70),
-          child: Column(
-            children: <Widget>[
-              Text(
+        child: Column(
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.only(
+                  top: 70 -
+                      (MediaQuery.of(context).padding.top + 10) *
+                          (1 - (_positionAux / _expandedHeight)),
+                  left: 0),
+              child: Text(
                 capitalize(_name[0]) + " " + capitalize(_name.last),
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                    color: _positionAux == 0 ? Colors.white : Colors.black),
               ),
-              Visibility(
-                visible: true,
-                child: Text("Ciência da Computação",
-                    style: TextStyle(color: Color.fromRGBO(0, 0, 0, 0.56))),
-              ),
-              Expanded(
-                child: Row(
-                    children: _info.entries.map((entry) {
-                  return Expanded(
-                    child: Container(
-                      decoration:
-                          BoxDecoration(borderRadius: BorderRadius.circular(5)),
-                      margin: EdgeInsets.only(right: 5),
-                      padding: EdgeInsets.symmetric(horizontal: 2),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Text(entry.value.toString(),
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16)),
-                          Text(entry.key.toUpperCase(),
-                              style: TextStyle(
-                                  color: Color.fromRGBO(0, 0, 0, 0.48),
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 14)),
-                        ],
-                      ),
+            ),
+            Text("Ciência da Computação",
+                style: TextStyle(
+                    color: Color.fromRGBO(0, 0, 0, 0.56)
+                        .withOpacity(_positionAux / _expandedHeight))),
+            Expanded(
+              child: Row(
+                  children: _info.entries.map((entry) {
+                return Expanded(
+                  child: Container(
+                    decoration:
+                        BoxDecoration(borderRadius: BorderRadius.circular(5)),
+                    margin: EdgeInsets.only(right: 5),
+                    padding: EdgeInsets.symmetric(horizontal: 2),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text(entry.value.toString(),
+                            style: TextStyle(
+                                color: Colors.black.withOpacity(
+                                    _positionAux / _expandedHeight),
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16)),
+                        Text(entry.key.toUpperCase(),
+                            style: TextStyle(
+                                color: Color.fromRGBO(0, 0, 0, 0.48)
+                                    .withOpacity(
+                                        _positionAux / _expandedHeight),
+                                fontWeight: FontWeight.normal,
+                                fontSize: 14)),
+                      ],
                     ),
-                  );
-                }).toList()),
-              )
-            ],
-          ),
+                  ),
+                );
+              }).toList()),
+            )
+          ],
         ),
       ),
     );
   }
 
-  _body() {
+  _body(_positionAux, _expandedHeight) {
     return Container(
       width: 5 * MediaQuery.of(context).size.height / 7,
       child: ScrollConfiguration(
@@ -247,7 +260,10 @@ class _HomeScreenState extends State<HomeScreen> {
           physics: NeverScrollableScrollPhysics(),
           padding: EdgeInsets.symmetric(
               horizontal: 16,
-              vertical: 25 + MediaQuery.of(context).size.height / 8),
+              vertical: ((25 + MediaQuery.of(context).size.height / 8) *
+                      (_positionAux / _expandedHeight)) +
+                  (MediaQuery.of(context).padding.top + kToolbarHeight + 5) *
+                      (1 - (_positionAux / _expandedHeight))),
           children: <Widget>[
             Container(
                 margin: EdgeInsets.only(bottom: 10),
