@@ -173,9 +173,10 @@ class _HomeScreenState extends State<HomeScreen> {
         margin: EdgeInsets.only(
             left: 12 * (_positionAux / _expandedHeight),
             right: 12 * (_positionAux / _expandedHeight),
-            top: scrollPosition(
-                    (_expandedHeight + MediaQuery.of(context).padding.top)) /
-                2),
+            top: (_positionAux / 2) +
+                MediaQuery.of(context).padding.top -
+                (MediaQuery.of(context).padding.top *
+                    (1 - (_positionAux / _expandedHeight)))),
         // top: _positionAux / 2),
         decoration: BoxDecoration(
             color: Colors.white.withOpacity(_positionAux / _expandedHeight),
@@ -192,11 +193,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   ],
             borderRadius:
                 BorderRadius.circular(10 * (_positionAux / _expandedHeight))),
-        height: 2 * MediaQuery.of(context).size.height / 7,
+        height: _expandedHeight,
         width: MediaQuery.of(context).size.width,
         child: Column(
           children: <Widget>[
-            Padding(
+            Container(
+              alignment:
+                  Alignment(-0.3 + (0.3 * (_positionAux / _expandedHeight)), 0),
+              // color: Colors.red,
               padding: EdgeInsets.only(
                   top: 70 -
                       (MediaQuery.of(context).padding.top + 10) *
