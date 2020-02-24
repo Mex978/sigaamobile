@@ -59,7 +59,16 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     double _expandedHeight = 1.8 * MediaQuery.of(context).size.height / 7;
-    User _user = _userController.user;
+    // User _user = _userController.user;
+    //TODO: Tirar isso
+    User _user = User(
+        curso: "Ciencia a computacao",
+        entrada: "2016.2",
+        ira: "8.2",
+        matricula: "20169069680",
+        nome: "Max Nicolas de Oliveira Lima",
+        semestre: "2020.1",
+        turno: "Vespertino");
     final _name = _user.nome.toLowerCase().split(" ");
 
     return Scaffold(
@@ -68,8 +77,8 @@ class _HomeScreenState extends State<HomeScreen> {
       drawer: CustomDrawer(),
       body: Observer(
         builder: (_) {
-          if (_userController.user == null)
-            return Center(child: CircularProgressIndicator());
+          // if (_userController.user == null)
+          //   return Center(child: CircularProgressIndicator());
 
           double _positionAux = scrollPosition(_expandedHeight);
           double radius = 20 + 40 * (_positionAux / _expandedHeight);
@@ -131,10 +140,9 @@ class _HomeScreenState extends State<HomeScreen> {
   _avatar(_user, _expandedHeight, _positionAux, radius) {
     return Positioned(
       top: (_positionAux / 2) -
-          radius +
-          4 * (1 - (_positionAux / _expandedHeight)) +
-          MediaQuery.of(context).padding.top *
-              (1 - (_positionAux / _expandedHeight)),
+          radius * (_positionAux / _expandedHeight) +
+          MediaQuery.of(context).padding.top +
+          ((kToolbarHeight - 2 * radius) / 2),
       //  top: -5,
       // left: (MediaQuery.of(context).size.width / 2) - radius,
       left: 0,
@@ -144,7 +152,9 @@ class _HomeScreenState extends State<HomeScreen> {
         //     _expandedHeight,
         opacity: 1,
         child: Container(
-            padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+            padding: EdgeInsets.only(
+                top: MediaQuery.of(context).padding.top *
+                    (_positionAux / _expandedHeight)),
             alignment:
                 Alignment(-0.70 + 0.7 * (_positionAux / _expandedHeight), 0),
             // padding: EdgeInsets.only(left: 50, right: (50.0 + 90)),
@@ -198,20 +208,40 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           children: <Widget>[
             Container(
-              alignment:
-                  Alignment(-0.3 + (0.3 * (_positionAux / _expandedHeight)), 0),
-              // color: Colors.red,
-              padding: EdgeInsets.only(
-                  top: 70 -
-                      (MediaQuery.of(context).padding.top + 10) *
-                          (1 - (_positionAux / _expandedHeight)),
+              height: _positionAux == 0 ? kToolbarHeight : null,
+              alignment: Alignment(
+                  -0.25 + (0.25 * (_positionAux / _expandedHeight)), 0),
+              margin: EdgeInsets.only(
+                  top: _positionAux == 0
+                      ? MediaQuery.of(context).padding.top
+                      : (70 * (_positionAux / _expandedHeight)),
+                  // top: (70 * (_positionAux / _expandedHeight)) +
+                  //     (((_positionAux / 2) -
+                  //             35 * (_positionAux / _expandedHeight) +
+                  //             MediaQuery.of(context).padding.top +
+                  //             ((kToolbarHeight - 35) / 2)) *
+                  //         (1 - (_positionAux / _expandedHeight))),
                   left: 0),
-              child: Text(
-                capitalize(_name[0]) + " " + capitalize(_name.last),
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
-                    color: _positionAux == 0 ? Colors.white : Colors.black),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Container(
+                    // height: _positionAux == 0 ? kToolbarHeight : null,
+                    alignment: Alignment(
+                        -0.25 + (0.25 * (_positionAux / _expandedHeight)), 0),
+                    // color: Colors.red,
+
+                    child: Text(
+                      capitalize(_name[0]) + " " + capitalize(_name.last),
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                          color:
+                              _positionAux == 0 ? Colors.white : Colors.black),
+                    ),
+                  ),
+                ],
               ),
             ),
             Text("Ciência da Computação",

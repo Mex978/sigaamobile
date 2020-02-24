@@ -10,20 +10,28 @@ class AvatarPerfil extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CircleAvatar(
-      backgroundColor: Colors.transparent,
-      child: Stack(
-        children: <Widget>[
-          SvgPicture.asset("lib/assets/user.svg"),
-          if (user.imagem != null)
-            CircleAvatar(
-              backgroundColor: Colors.transparent,
-              backgroundImage: NetworkImage(user.imagem),
-              radius: radius,
-            ),
-        ],
+    return ClipOval(
+      // backgroundColor: Colors.transparent,
+      child: Container(
+        height: radius * 2,
+        width: radius * 2,
+        child: Stack(
+          children: <Widget>[
+            SvgPicture.asset("lib/assets/user.svg"),
+            if (user.imagem != null)
+              ClipOval(
+                // backgroundColor: Colors.transparent,
+                child: Container(
+                  height: radius * 2,
+                  width: radius * 2,
+                  child: Image.network(user.imagem),
+                ),
+                // radius: radius,
+              ),
+          ],
+        ),
       ),
-      radius: radius,
+      // radius: radius,
     );
   }
 }

@@ -16,21 +16,21 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   void initState() {
-    _userController.recoverUser().then((isSuccess) {
-      Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-              builder: (context) => isSuccess ? HomeScreen() : LoginScreen(),
-              settings: RouteSettings(isInitialRoute: true)));
-    }).catchError((e) {
-      Future.delayed(Duration(seconds: 2), () {
-        Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-                builder: (context) => LoginScreen(),
-                settings: RouteSettings(isInitialRoute: true)));
-      });
-    });
+    // _userController.recoverUser().then((isSuccess) {
+    //   Navigator.pushReplacement(
+    //       context,
+    //       MaterialPageRoute(
+    //           builder: (context) => isSuccess ? HomeScreen() : LoginScreen(),
+    //           settings: RouteSettings(isInitialRoute: true)));
+    // }).catchError((e) {
+    //   Future.delayed(Duration(seconds: 2), () {
+    //     Navigator.pushReplacement(
+    //         context,
+    //         MaterialPageRoute(
+    //             builder: (context) => LoginScreen(),
+    //             settings: RouteSettings(isInitialRoute: true)));
+    //   });
+    // });
     super.initState();
   }
 
@@ -38,7 +38,7 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: sigaaLogo(),
+        child: HomeScreen(),
       ),
     );
   }
