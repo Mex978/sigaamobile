@@ -4,7 +4,6 @@ final Map<String, dynamic> userMockado = {
   "ira": 8.76,
   "matricula": 20169069380,
   "periodo": "2020.1",
-  "notas": [],
   "disciplinas": [
     {
       'componente_curricular': 'CÁLCULO DIFERENCIAL E INTEGRAL II',

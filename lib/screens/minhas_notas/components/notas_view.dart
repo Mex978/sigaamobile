@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sigaamobile/models/nota_model.dart';
+import 'package:sigaamobile/screens/minhas_notas/components/custom_expansion_tile.dart';
 import 'package:sigaamobile/shared/utils.dart';
 
 class NotasView extends StatefulWidget {
@@ -37,27 +38,53 @@ class _NotasViewState extends State<NotasView>
           ),
           body: TabBarView(
             children: widget.data.map((item) {
-              return ListView(
-                  children: item.disciplinas.map<Widget>((disciplina) {
-                return ExpansionTile(
-                  backgroundColor:
-                      disciplina.situacao != null && disciplina.situacao != "--"
-                          ? disciplina.situacao == "AM" ||
-                                  (disciplina.situacao == "EF" &&
-                                      disciplina.resultado != "--")
-                              ? Color.fromRGBO(119, 221, 119, 0.4)
-                              : Color.fromRGBO(255, 0, 0, 0.4)
-                          : Color.fromRGBO(0, 0, 0, 0.2),
-                  title: Text("${disciplina.disciplina}"),
-                  subtitle: Text(
-                    "${disciplina.codigo}",
-                    style: TextStyle(color: Color.fromRGBO(0, 0, 0, 0.4)),
-                  ),
-                  children: disciplina.toJson().keys.map<Widget>((String key) {
-                    return _tileDisciplina(key, disciplina.toJson());
-                  }).toList(),
-                );
-              }).toList());
+              return SingleChildScrollView(
+                  child: Column(
+                children: item.disciplinas.map<Widget>((disciplina) {
+                  return Column(
+                    children: <Widget>[
+                      CustomExpansionTile(
+                        backgroundColor: disciplina.situacao != null &&
+                                disciplina.situacao != "--"
+                            ? disciplina.situacao == "AM" ||
+                                    (disciplina.situacao == "EF" &&
+                                        disciplina.resultado != "--")
+                                ? Color.fromRGBO(119, 221, 119, 0.4)
+                                : Color.fromRGBO(255, 0, 0, 0.4)
+                            : Color.fromRGBO(0, 0, 0, 0.2),
+                        title: Text("${disciplina.disciplina}",
+                            style: TextStyle(fontSize: 16)),
+                        subtitle: Text(
+                          "${disciplina.codigo}",
+                          style: TextStyle(color: Color.fromRGBO(0, 0, 0, 0.4)),
+                        ),
+                        children:
+                            disciplina.toJson().keys.map<Widget>((String key) {
+                          return _tileDisciplina(key, disciplina.toJson());
+                        }).toList(),
+                      ),
+                      ExpansionTile(
+                        backgroundColor: disciplina.situacao != null &&
+                                disciplina.situacao != "--"
+                            ? disciplina.situacao == "AM" ||
+                                    (disciplina.situacao == "EF" &&
+                                        disciplina.resultado != "--")
+                                ? Color.fromRGBO(119, 221, 119, 0.4)
+                                : Color.fromRGBO(255, 0, 0, 0.4)
+                            : Color.fromRGBO(0, 0, 0, 0.2),
+                        title: Text(
+                          "${disciplina.disciplina}",
+                        ),
+                        subtitle: Text(
+                          "${disciplina.codigo}",
+                          style: TextStyle(color: Color.fromRGBO(0, 0, 0, 0.4)),
+                        ),
+                        children: <Widget>[Text("Teste")],
+                      )
+                    ],
+                  );
+                }).toList(),
+              ));
             }).toList(),
           )),
     );
