@@ -18,19 +18,18 @@ class CustomExpansionTile extends StatefulWidget {
 class _CustomExpansionTileState extends State<CustomExpansionTile>
     with SingleTickerProviderStateMixin {
   bool _isExpanded = false;
-  AnimationController rotationController;
   Animation<Color> _borderColor;
-  final ColorTween _borderColorTween = ColorTween();
-  Animatable<double> _easeOutTween = CurveTween(curve: Curves.easeOut);
   AnimationController _controller;
   Animation<double> _iconTurns;
   Animation<double> _heigthAnimation;
   Animation<Color> _headerColor;
   Animation<Color> _iconColor;
 
+  final ColorTween _borderColorTween = ColorTween(end: Colors.grey[400]);
   final ColorTween _headerColorTween = ColorTween(end: Color(0xFF0E98D9));
   final ColorTween _iconColorTween = ColorTween(end: Color(0xFF0E98D9));
-  final Animatable<double> _easeInTween = CurveTween(curve: Curves.bounceIn);
+  final Animatable<double> _easeInTween = CurveTween(curve: Curves.easeIn);
+  final Animatable<double> _easeOutTween = CurveTween(curve: Curves.easeOut);
   final Animatable<double> _halfTween = Tween<double>(begin: 0.0, end: 0.5);
 
   @override
@@ -38,7 +37,7 @@ class _CustomExpansionTileState extends State<CustomExpansionTile>
     super.initState();
     _controller =
         AnimationController(duration: Duration(milliseconds: 200), vsync: this);
-    _iconTurns = _controller.drive(_halfTween.chain(_easeInTween));
+    _iconTurns = _controller.drive(_halfTween.chain(_easeOutTween));
     _borderColor = _controller.drive(_borderColorTween.chain(_easeOutTween));
     _heigthAnimation = _controller.drive(_easeInTween.chain(_easeInTween));
     _headerColor = _controller.drive(_headerColorTween.chain(_easeInTween));
@@ -59,8 +58,10 @@ class _CustomExpansionTileState extends State<CustomExpansionTile>
           color: _isExpanded ? widget.backgroundColor : Colors.transparent,
           border: _isExpanded
               ? Border(
-                  top: BorderSide(color: Colors.grey[400]),
-                  bottom: BorderSide(color: Colors.grey[400]),
+                  top: BorderSide(
+                      color: _borderColor.value ?? Colors.transparent),
+                  bottom: BorderSide(
+                      color: _borderColor.value ?? Colors.transparent),
                 )
               : null),
       width: MediaQuery.of(context).size.width,
