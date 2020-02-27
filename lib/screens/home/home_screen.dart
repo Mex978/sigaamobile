@@ -24,28 +24,26 @@ class _HomeScreenState extends State<HomeScreen> {
   final GlobalKey<ScaffoldState> _scaffoldState = GlobalKey<ScaffoldState>();
   final _userController = GetIt.I.get<UserController>();
   ScrollController _scrollController;
+  double offset = 0.0;
 
   @override
   void initState() {
     _userController.stateLogin = RequestState.IDLE;
-    _scrollController = new ScrollController();
-    _scrollController.addListener(() => setState(() {}));
+    _scrollController = new ScrollController()
+      ..addListener(() {
+        setState(() {
+          offset = _scrollController.offset;
+        });
+      });
     super.initState();
   }
 
   double scrollPosition(double expandedHeight) {
     double res = expandedHeight;
-    // print("expandedHeight > $expandedHeight");
-    if (_scrollController.hasClients) {
-      double offset = _scrollController.offset;
-      // print(offset);
-
-      if (offset < (res - kToolbarHeight)) {
-        res -= offset;
-        // print("Res> $res");
-      } else {
-        res = kToolbarHeight;
-      }
+    if (offset < (res - kToolbarHeight)) {
+      res -= offset;
+    } else {
+      res = kToolbarHeight;
     }
     return res == kToolbarHeight ? 0 : res;
   }

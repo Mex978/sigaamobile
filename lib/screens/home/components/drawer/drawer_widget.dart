@@ -17,8 +17,14 @@ class CustomDrawer extends StatelessWidget {
     {"name": "Atestado de matrícula", "icon": "lib/assets/certificate.svg"},
     {"name": "Créditos", "icon": "lib/assets/pikachu.svg"}
   ];
+
   @override
   Widget build(BuildContext context) {
+    _navigate(var screen) {
+      Navigator.pop(context);
+      Navigator.push(context, MaterialPageRoute(builder: (_) => screen));
+    }
+
     return Drawer(
       child: Container(
         color: Color.fromRGBO(0, 0, 0, 0),
@@ -85,12 +91,13 @@ class CustomDrawer extends StatelessWidget {
                                               userMockado["disciplinas"])));
                               break;
                             case "Minhas notas":
-                              Navigator.pop(context);
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          MinhasNotasScreen()));
+                              _navigate(MinhasNotasScreen());
+                              // Navigator.pop(context);
+                              // Navigator.push(
+                              //     context,
+                              //     MaterialPageRoute(
+                              //         builder: (context) =>
+                              //             MinhasNotasScreen()));
                               break;
                             case "Créditos":
                               Navigator.pop(context);

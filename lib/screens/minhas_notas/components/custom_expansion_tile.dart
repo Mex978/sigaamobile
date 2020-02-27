@@ -17,14 +17,20 @@ class CustomExpansionTile extends StatefulWidget {
 
 class _CustomExpansionTileState extends State<CustomExpansionTile>
     with SingleTickerProviderStateMixin {
-  bool isExpanded = false;
+  bool _isExpanded = false;
   AnimationController rotationController;
   Animation<Color> _borderColor;
   final ColorTween _borderColorTween = ColorTween();
   Animatable<double> _easeOutTween = CurveTween(curve: Curves.easeOut);
   AnimationController _controller;
   Animation<double> _iconTurns;
-  final Animatable<double> _easeInTween = CurveTween(curve: Curves.easeIn);
+  Animation<double> _heigthAnimation;
+  Animation<Color> _headerColor;
+  Animation<Color> _iconColor;
+
+  final ColorTween _headerColorTween = ColorTween(end: Color(0xFF0E98D9));
+  final ColorTween _iconColorTween = ColorTween(end: Color(0xFF0E98D9));
+  final Animatable<double> _easeInTween = CurveTween(curve: Curves.bounceIn);
   final Animatable<double> _halfTween = Tween<double>(begin: 0.0, end: 0.5);
 
   @override
@@ -34,9 +40,9 @@ class _CustomExpansionTileState extends State<CustomExpansionTile>
         AnimationController(duration: Duration(milliseconds: 200), vsync: this);
     _iconTurns = _controller.drive(_halfTween.chain(_easeInTween));
     _borderColor = _controller.drive(_borderColorTween.chain(_easeOutTween));
-
-    // rotationController = AnimationController(
-    //     duration: const Duration(milliseconds: 300), vsync: this);
+    _heigthAnimation = _controller.drive(_easeInTween.chain(_easeInTween));
+    _headerColor = _controller.drive(_headerColorTween.chain(_easeInTween));
+    _iconColor = _controller.drive(_iconColorTween.chain(_easeInTween));
   }
 
   @override
@@ -50,13 +56,11 @@ class _CustomExpansionTileState extends State<CustomExpansionTile>
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-          color: isExpanded ? widget.backgroundColor : Colors.transparent,
-          border: isExpanded
+          color: _isExpanded ? widget.backgroundColor : Colors.transparent,
+          border: _isExpanded
               ? Border(
-                  top: BorderSide(
-                      color: _borderColor.value ?? Colors.transparent),
-                  bottom: BorderSide(
-                      color: _borderColor.value ?? Colors.transparent),
+                  top: BorderSide(color: Colors.grey[400]),
+                  bottom: BorderSide(color: Colors.grey[400]),
                 )
               : null),
       width: MediaQuery.of(context).size.width,
@@ -66,8 +70,9 @@ class _CustomExpansionTileState extends State<CustomExpansionTile>
           InkWell(
               onTap: () {
                 setState(() {
-                  isExpanded = !isExpanded;
-                  if (isExpanded) {
+                  _isExpanded = !_isExpanded;
+                  if (_isExpanded) {
+                    _controller.value = 1.0;
                     _controller.forward();
                   } else {
                     _controller.reverse().then<void>((void value) {
@@ -79,42 +84,31 @@ class _CustomExpansionTileState extends State<CustomExpansionTile>
                   }
                 });
               },
-              child: ListTile(
-                title: widget.title,
-                subtitle: widget.subtitle,
-                trailing: RotationTransition(
-                    turns: _iconTurns,
-                    child: Icon(Icons.expand_more, color: Colors.grey[600])),
-              )
-
-              // Container(
-              //   padding: EdgeInsets.all(16),
-              //   width: MediaQuery.of(context).size.width,
-              //   child: Row(
-              //     children: <Widget>[
-              //       Expanded(
-              //         child: Column(
-              //           crossAxisAlignment: CrossAxisAlignment.start,
-              //           children: <Widget>[
-              //             widget.title,
-              //             widget.subtitle,
-              //           ],
-              //         ),
-              //       ),
-              //       RotationTransition(
-              //           turns: _iconTurns,
-              //           child: Icon(Icons.expand_more, color: Colors.grey[600])),
-              //     ],
-              //   ),
-              // ),
-              ),
-          AnimatedContainer(
-            height: isExpanded ? null : 0,
-            duration: Duration(milliseconds: 2000),
+              child: ListTileTheme.merge(
+                iconColor: _iconColor.value,
+                textColor: _headerColor.value,
+                child: ListTile(
+                  title: widget.title,
+                  subtitle: widget.subtitle,
+                  trailing: RotationTransition(
+                      turns: _iconTurns,
+                      child: Icon(Icons.expand_more, color: Colors.grey[600])),
+                ),
+              )),
+          SizeTransition(
+            sizeFactor: _heigthAnimation,
+            axis: Axis.vertical,
             child: Column(
               children: widget.children,
             ),
-          )
+          ),
+          // AnimatedContainer(
+          //   height: _isExpanded ? null : 0,
+          //   duration: Duration(milliseconds: 2000),
+          //   child: Column(
+          //     children: widget.children,
+          //   ),
+          // )
         ],
       ),
     );
