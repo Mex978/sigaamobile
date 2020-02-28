@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 
 class CustomExpansionTile extends StatefulWidget {
@@ -18,8 +16,8 @@ class CustomExpansionTile extends StatefulWidget {
 class _CustomExpansionTileState extends State<CustomExpansionTile>
     with SingleTickerProviderStateMixin {
   bool _isExpanded = false;
-  Animation<Color> _borderColor;
   AnimationController _controller;
+  Animation<Color> _borderColor;
   Animation<double> _iconTurns;
   Animation<double> _heigthAnimation;
   Animation<Color> _headerColor;
@@ -37,7 +35,7 @@ class _CustomExpansionTileState extends State<CustomExpansionTile>
     super.initState();
     _controller =
         AnimationController(duration: Duration(milliseconds: 200), vsync: this);
-    _iconTurns = _controller.drive(_halfTween.chain(_easeOutTween));
+    _iconTurns = _controller.drive(_halfTween.chain(_easeInTween));
     _borderColor = _controller.drive(_borderColorTween.chain(_easeOutTween));
     _heigthAnimation = _controller.drive(_easeInTween.chain(_easeInTween));
     _headerColor = _controller.drive(_headerColorTween.chain(_easeInTween));
@@ -45,10 +43,9 @@ class _CustomExpansionTileState extends State<CustomExpansionTile>
   }
 
   @override
-  void didChangeDependencies() {
-    final ThemeData theme = Theme.of(context);
-    _borderColorTween..end = theme.dividerColor;
-    super.didChangeDependencies();
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -93,7 +90,8 @@ class _CustomExpansionTileState extends State<CustomExpansionTile>
                   subtitle: widget.subtitle,
                   trailing: RotationTransition(
                       turns: _iconTurns,
-                      child: Icon(Icons.expand_more, color: Colors.grey[600])),
+                      child: Icon(Icons.expand_more,
+                          color: _iconColor?.value ?? Colors.grey[600])),
                 ),
               )),
           SizeTransition(
