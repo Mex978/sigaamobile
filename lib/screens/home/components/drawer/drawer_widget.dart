@@ -4,6 +4,7 @@ import 'package:get_it/get_it.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:sigaamobile/controllers/user_controller.dart';
 import 'package:sigaamobile/screens/credits/credits_screen.dart';
+import 'package:sigaamobile/screens/declaracao/declaracao_screen.dart';
 import 'package:sigaamobile/screens/lista_disciplinas/lista_disciplinas.dart';
 import 'package:sigaamobile/screens/login/login_screen.dart';
 import 'package:sigaamobile/screens/minhas_notas/minhas_notas_screen.dart';
@@ -14,7 +15,7 @@ class CustomDrawer extends StatelessWidget {
   final List<Map> options = [
     {"name": "Minhas notas", "icon": "lib/assets/list.svg"},
     {"name": "Calendário acadêmico", "icon": "lib/assets/calendar.svg"},
-    {"name": "Atestado de matrícula", "icon": "lib/assets/certificate.svg"},
+    {"name": "Declaração de vínculo", "icon": "lib/assets/certificate.svg"},
     {"name": "Créditos", "icon": "lib/assets/pikachu.svg"}
   ];
 
@@ -37,7 +38,6 @@ class CustomDrawer extends StatelessWidget {
                 decoration: BoxDecoration(
                     gradient: LinearGradient(
                         colors: [Color(0xFF19C2D7), Color(0xFF0E98D9)])),
-                // alignment: Alignment.center,
                 padding:
                     EdgeInsets.only(left: 16, right: 16, top: 30, bottom: 20),
                 child: Row(
@@ -93,6 +93,13 @@ class CustomDrawer extends StatelessWidget {
                             case "Minhas notas":
                               _navigate(MinhasNotasScreen());
                               break;
+                            case "Declaração de vínculo":
+                              Navigator.pop(context);
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (_) => DeclaracaoScreen()));
+                                              break;
                             case "Créditos":
                               Navigator.pop(context);
                               Navigator.push(

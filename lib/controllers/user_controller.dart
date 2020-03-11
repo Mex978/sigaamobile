@@ -1,11 +1,14 @@
 import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
 import 'package:sigaamobile/consts/request_state.dart';
+import 'package:sigaamobile/models/declaracao_model.dart';
 import 'package:sigaamobile/models/nota_model.dart';
 import 'package:sigaamobile/models/user_model.dart';
 import 'package:sigaamobile/services/api_repository.dart';
 import 'package:sigaamobile/shared/utils.dart';
 import 'package:sigaamobile/models/disciplina_model.dart';
+
+import '../consts/request_state.dart';
 part 'user_controller.g.dart';
 
 class UserController = _UserControllerBase with _$UserController;
@@ -24,7 +27,10 @@ abstract class _UserControllerBase with Store {
   bool recovered;
 
   @observable
-  RequestState stateLogin, stateNotas;
+  Declaracao declaracao;
+
+  @observable
+  RequestState stateLogin, stateNotas, stateDeclaracao;
 
   final _api = GetIt.I.get<ApiRepository>();
 
@@ -50,6 +56,15 @@ abstract class _UserControllerBase with Store {
   }
 
   @action
+  recoverDeclaracao() async {
+    stateDeclaracao = RequestState.LOADING;
+    declaracao = null;
+    Map<String,dynamic> _temp = await _api.declaracao();
+    declaracao = Declaracao.fromJson(_temp);
+    stateDeclaracao = RequestState.SUCCESS;
+  }
+
+  @action
   login({String userTemp, String passTemp}) async {
     stateLogin = RequestState.LOADING;
     await _api.login(userTemp, passTemp).then((json) async {
@@ -59,7 +74,6 @@ abstract class _UserControllerBase with Store {
       await _loadDisciplinas();
       stateLogin = RequestState.SUCCESS;
     }).catchError((e) {
-      print("######### ERRO AQUI");
       stateLogin = RequestState.ERROR;
     });
   }

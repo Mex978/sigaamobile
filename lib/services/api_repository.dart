@@ -12,12 +12,23 @@ class ApiRepository {
     _dio.interceptors.add(CustomInterceptor());
   }
 
+  Future<Map<String, dynamic>> declaracao() async {
+    final Map<String, String> _credentials = await getDataUser();
+
+    final response = await _dio.post('/declaracao', data: {
+      "username": _credentials["user"],
+      "password": _credentials["pass"]
+    }).catchError((e) {
+      print(e);
+    });
+    return response?.data;
+  }
+
   Future<Map<String, dynamic>> login(String user, String pass) async {
     final response = await _dio.post('/info',
         data: {"username": user, "password": pass}).catchError((e) {
       print(e);
     });
-    print("Response => $response");
     return response?.data;
   }
 
@@ -30,7 +41,7 @@ class ApiRepository {
     }).catchError((e) {
       print(e);
     });
-    return response.data;
+    return response?.data;
   }
 
   Future<List<dynamic>> disciplinas() async {
@@ -42,6 +53,6 @@ class ApiRepository {
     }).catchError((e) {
       print(e);
     });
-    return response.data;
+    return response?.data;
   }
 }

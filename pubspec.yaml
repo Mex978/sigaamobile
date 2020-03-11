@@ -17,6 +17,7 @@ environment:
   sdk: ">=2.2.2 <3.0.0"
 
 dependencies:
+  flutter_full_pdf_viewer: ^1.0.6
   flutter_svg: ^0.15.0
   dio: ^3.0.8
   rxdart: ^0.23.1
@@ -25,6 +26,7 @@ dependencies:
   get_it:
   flutter_mobx:
   mobx:
+  path_provider:
   transparent_image: ^1.0.0
   flutter:
     sdk: flutter

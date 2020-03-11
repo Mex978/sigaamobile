@@ -77,6 +77,23 @@ mixin _$UserController on _UserControllerBase, Store {
     }, _$recoveredAtom, name: '${_$recoveredAtom.name}_set');
   }
 
+  final _$declaracaoAtom = Atom(name: '_UserControllerBase.declaracao');
+
+  @override
+  Declaracao get declaracao {
+    _$declaracaoAtom.context.enforceReadPolicy(_$declaracaoAtom);
+    _$declaracaoAtom.reportObserved();
+    return super.declaracao;
+  }
+
+  @override
+  set declaracao(Declaracao value) {
+    _$declaracaoAtom.context.conditionallyRunInAction(() {
+      super.declaracao = value;
+      _$declaracaoAtom.reportChanged();
+    }, _$declaracaoAtom, name: '${_$declaracaoAtom.name}_set');
+  }
+
   final _$stateLoginAtom = Atom(name: '_UserControllerBase.stateLogin');
 
   @override
@@ -111,11 +128,36 @@ mixin _$UserController on _UserControllerBase, Store {
     }, _$stateNotasAtom, name: '${_$stateNotasAtom.name}_set');
   }
 
+  final _$stateDeclaracaoAtom =
+      Atom(name: '_UserControllerBase.stateDeclaracao');
+
+  @override
+  RequestState get stateDeclaracao {
+    _$stateDeclaracaoAtom.context.enforceReadPolicy(_$stateDeclaracaoAtom);
+    _$stateDeclaracaoAtom.reportObserved();
+    return super.stateDeclaracao;
+  }
+
+  @override
+  set stateDeclaracao(RequestState value) {
+    _$stateDeclaracaoAtom.context.conditionallyRunInAction(() {
+      super.stateDeclaracao = value;
+      _$stateDeclaracaoAtom.reportChanged();
+    }, _$stateDeclaracaoAtom, name: '${_$stateDeclaracaoAtom.name}_set');
+  }
+
   final _$recoverUserAsyncAction = AsyncAction('recoverUser');
 
   @override
   Future recoverUser() {
     return _$recoverUserAsyncAction.run(() => super.recoverUser());
+  }
+
+  final _$recoverDeclaracaoAsyncAction = AsyncAction('recoverDeclaracao');
+
+  @override
+  Future recoverDeclaracao() {
+    return _$recoverDeclaracaoAsyncAction.run(() => super.recoverDeclaracao());
   }
 
   final _$loginAsyncAction = AsyncAction('login');
@@ -129,7 +171,7 @@ mixin _$UserController on _UserControllerBase, Store {
   @override
   String toString() {
     final string =
-        'user: ${user.toString()},disciplinas: ${disciplinas.toString()},notas: ${notas.toString()},recovered: ${recovered.toString()},stateLogin: ${stateLogin.toString()},stateNotas: ${stateNotas.toString()}';
+        'user: ${user.toString()},disciplinas: ${disciplinas.toString()},notas: ${notas.toString()},recovered: ${recovered.toString()},declaracao: ${declaracao.toString()},stateLogin: ${stateLogin.toString()},stateNotas: ${stateNotas.toString()},stateDeclaracao: ${stateDeclaracao.toString()}';
     return '{$string}';
   }
 }
