@@ -24,6 +24,18 @@ class ApiRepository {
     return response?.data;
   }
 
+  Future<Map<String, dynamic>> historico() async {
+    final Map<String, String> _credentials = await getDataUser();
+
+    final response = await _dio.post('/historico', data: {
+      "username": _credentials["user"],
+      "password": _credentials["pass"]
+    }).catchError((e) {
+      print(e);
+    });
+    return response?.data;
+  }
+
   Future<Map<String, dynamic>> login(String user, String pass) async {
     final response = await _dio.post('/info',
         data: {"username": user, "password": pass}).catchError((e) {

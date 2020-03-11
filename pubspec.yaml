@@ -17,6 +17,7 @@ environment:
   sdk: ">=2.2.2 <3.0.0"
 
 dependencies:
+  esys_flutter_share: ^1.0.2
   flutter_full_pdf_viewer: ^1.0.6
   flutter_svg: ^0.15.0
   dio: ^3.0.8
@@ -68,6 +69,7 @@ flutter:
     - lib/assets/jp.png
     - lib/assets/twitter.svg
     - lib/assets/github.svg
+    - lib/assets/history.svg
   #  - images/a_dot_burr.jpeg
   #  - images/a_dot_ham.jpeg
 

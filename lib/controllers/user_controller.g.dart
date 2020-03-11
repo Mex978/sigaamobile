@@ -94,6 +94,23 @@ mixin _$UserController on _UserControllerBase, Store {
     }, _$declaracaoAtom, name: '${_$declaracaoAtom.name}_set');
   }
 
+  final _$historicoAtom = Atom(name: '_UserControllerBase.historico');
+
+  @override
+  Historico get historico {
+    _$historicoAtom.context.enforceReadPolicy(_$historicoAtom);
+    _$historicoAtom.reportObserved();
+    return super.historico;
+  }
+
+  @override
+  set historico(Historico value) {
+    _$historicoAtom.context.conditionallyRunInAction(() {
+      super.historico = value;
+      _$historicoAtom.reportChanged();
+    }, _$historicoAtom, name: '${_$historicoAtom.name}_set');
+  }
+
   final _$stateLoginAtom = Atom(name: '_UserControllerBase.stateLogin');
 
   @override
@@ -146,6 +163,23 @@ mixin _$UserController on _UserControllerBase, Store {
     }, _$stateDeclaracaoAtom, name: '${_$stateDeclaracaoAtom.name}_set');
   }
 
+  final _$stateHistoricoAtom = Atom(name: '_UserControllerBase.stateHistorico');
+
+  @override
+  RequestState get stateHistorico {
+    _$stateHistoricoAtom.context.enforceReadPolicy(_$stateHistoricoAtom);
+    _$stateHistoricoAtom.reportObserved();
+    return super.stateHistorico;
+  }
+
+  @override
+  set stateHistorico(RequestState value) {
+    _$stateHistoricoAtom.context.conditionallyRunInAction(() {
+      super.stateHistorico = value;
+      _$stateHistoricoAtom.reportChanged();
+    }, _$stateHistoricoAtom, name: '${_$stateHistoricoAtom.name}_set');
+  }
+
   final _$recoverUserAsyncAction = AsyncAction('recoverUser');
 
   @override
@@ -160,6 +194,13 @@ mixin _$UserController on _UserControllerBase, Store {
     return _$recoverDeclaracaoAsyncAction.run(() => super.recoverDeclaracao());
   }
 
+  final _$recoverHistoricoAsyncAction = AsyncAction('recoverHistorico');
+
+  @override
+  Future recoverHistorico() {
+    return _$recoverHistoricoAsyncAction.run(() => super.recoverHistorico());
+  }
+
   final _$loginAsyncAction = AsyncAction('login');
 
   @override
@@ -171,7 +212,7 @@ mixin _$UserController on _UserControllerBase, Store {
   @override
   String toString() {
     final string =
-        'user: ${user.toString()},disciplinas: ${disciplinas.toString()},notas: ${notas.toString()},recovered: ${recovered.toString()},declaracao: ${declaracao.toString()},stateLogin: ${stateLogin.toString()},stateNotas: ${stateNotas.toString()},stateDeclaracao: ${stateDeclaracao.toString()}';
+        'user: ${user.toString()},disciplinas: ${disciplinas.toString()},notas: ${notas.toString()},recovered: ${recovered.toString()},declaracao: ${declaracao.toString()},historico: ${historico.toString()},stateLogin: ${stateLogin.toString()},stateNotas: ${stateNotas.toString()},stateDeclaracao: ${stateDeclaracao.toString()},stateHistorico: ${stateHistorico.toString()}';
     return '{$string}';
   }
 }

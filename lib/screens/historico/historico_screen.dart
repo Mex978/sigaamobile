@@ -14,16 +14,16 @@ import '../../consts/request_state.dart';
 import '../../controllers/user_controller.dart';
 import '../../shared/components/custom_app_bar.dart';
 
-class DeclaracaoScreen extends StatefulWidget {
+class HistoricoScreen extends StatefulWidget {
   @override
-  _DeclaracaoScreenState createState() => _DeclaracaoScreenState();
+  _HistoricoScreenState createState() => _HistoricoScreenState();
 }
 
-class _DeclaracaoScreenState extends State<DeclaracaoScreen> {
+class _HistoricoScreenState extends State<HistoricoScreen> {
   final _userController = GetIt.I.get<UserController>();
   @override
   void initState() {
-    _userController.recoverDeclaracao();
+    _userController.recoverHistorico();
     super.initState();
   }
 
@@ -40,10 +40,10 @@ class _DeclaracaoScreenState extends State<DeclaracaoScreen> {
   Widget build(BuildContext context) {
     return Observer(
       builder: (_) {
-        switch (_userController.stateDeclaracao) {
+        switch (_userController.stateHistorico) {
           case RequestState.SUCCESS:
             return FutureBuilder<File>(
-              future: createPdf(_userController.declaracao.image),
+              future: createPdf(_userController.historico.image),
               builder:
                   (BuildContext context, AsyncSnapshot<File> snapshotFile) {
                 if (!snapshotFile.hasData) {
@@ -54,22 +54,20 @@ class _DeclaracaoScreenState extends State<DeclaracaoScreen> {
                   );
                 }
                 return PDFViewerScaffold(
-                  appBar: customAppBar(
-                      title: Text("Declaração de vínculo"),
-                      actions: <Widget>[
-                        IconButton(
-                          icon: Icon(Icons.share),
-                          onPressed: () async {
-                            Uint8List bytes =
-                                await snapshotFile.data.readAsBytes();
-                            await Share.file(
-                                'Compartilhar declaração de vínculo',
-                                'Declaracao de vínculo.pdf',
-                                bytes.buffer.asUint8List(),
-                                'application/pdf');
-                          },
-                        )
-                      ]),
+                  appBar:
+                      customAppBar(title: Text("Histórico"), actions: <Widget>[
+                    IconButton(
+                      icon: Icon(Icons.share),
+                      onPressed: () async {
+                        Uint8List bytes = await snapshotFile.data.readAsBytes();
+                        await Share.file(
+                            'Compartilhar histórico',
+                            'Histórico.pdf',
+                            bytes.buffer.asUint8List(),
+                            'application/pdf');
+                      },
+                    )
+                  ]),
                   path: snapshotFile.data.path,
                 );
               },
@@ -77,8 +75,7 @@ class _DeclaracaoScreenState extends State<DeclaracaoScreen> {
           case RequestState.LOADING:
           default:
             return Scaffold(
-                // titleSliverBar: widget.anexo.rotulo,
-                appBar: customAppBar(title: Text("Declaração de vínculo")),
+                appBar: customAppBar(title: Text("Histórico")),
                 body: Center(
                   child: CircularProgressIndicator(),
                 ));

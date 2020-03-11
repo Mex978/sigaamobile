@@ -5,6 +5,7 @@ import 'package:oktoast/oktoast.dart';
 import 'package:sigaamobile/controllers/user_controller.dart';
 import 'package:sigaamobile/screens/credits/credits_screen.dart';
 import 'package:sigaamobile/screens/declaracao/declaracao_screen.dart';
+import 'package:sigaamobile/screens/historico/historico_screen.dart';
 import 'package:sigaamobile/screens/lista_disciplinas/lista_disciplinas.dart';
 import 'package:sigaamobile/screens/login/login_screen.dart';
 import 'package:sigaamobile/screens/minhas_notas/minhas_notas_screen.dart';
@@ -16,6 +17,7 @@ class CustomDrawer extends StatelessWidget {
     {"name": "Minhas notas", "icon": "lib/assets/list.svg"},
     {"name": "Calendário acadêmico", "icon": "lib/assets/calendar.svg"},
     {"name": "Declaração de vínculo", "icon": "lib/assets/certificate.svg"},
+    {"name": "Histórico", "icon": "lib/assets/history.svg"},
     {"name": "Créditos", "icon": "lib/assets/pikachu.svg"}
   ];
 
@@ -99,7 +101,14 @@ class CustomDrawer extends StatelessWidget {
                                   context,
                                   MaterialPageRoute(
                                       builder: (_) => DeclaracaoScreen()));
-                                              break;
+                              break;
+                            case "Histórico":
+                              Navigator.pop(context);
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (_) => HistoricoScreen()));
+                              break;
                             case "Créditos":
                               Navigator.pop(context);
                               Navigator.push(

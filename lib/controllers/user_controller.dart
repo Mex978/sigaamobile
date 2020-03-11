@@ -7,6 +7,7 @@ import 'package:sigaamobile/models/user_model.dart';
 import 'package:sigaamobile/services/api_repository.dart';
 import 'package:sigaamobile/shared/utils.dart';
 import 'package:sigaamobile/models/disciplina_model.dart';
+import 'package:sigaamobile/models/historico_model.dart';
 
 import '../consts/request_state.dart';
 part 'user_controller.g.dart';
@@ -30,7 +31,10 @@ abstract class _UserControllerBase with Store {
   Declaracao declaracao;
 
   @observable
-  RequestState stateLogin, stateNotas, stateDeclaracao;
+  Historico historico;
+
+  @observable
+  RequestState stateLogin, stateNotas, stateDeclaracao, stateHistorico;
 
   final _api = GetIt.I.get<ApiRepository>();
 
@@ -59,9 +63,18 @@ abstract class _UserControllerBase with Store {
   recoverDeclaracao() async {
     stateDeclaracao = RequestState.LOADING;
     declaracao = null;
-    Map<String,dynamic> _temp = await _api.declaracao();
+    Map<String, dynamic> _temp = await _api.declaracao();
     declaracao = Declaracao.fromJson(_temp);
     stateDeclaracao = RequestState.SUCCESS;
+  }
+
+  @action
+  recoverHistorico() async {
+    stateHistorico = RequestState.LOADING;
+    historico = null;
+    Map<String, dynamic> _temp = await _api.historico();
+    historico = Historico.fromJson(_temp);
+    stateHistorico = RequestState.SUCCESS;
   }
 
   @action
