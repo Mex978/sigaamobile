@@ -92,12 +92,6 @@ class CustomDrawer extends StatelessWidget {
                               break;
                             case "Minhas notas":
                               _navigate(MinhasNotasScreen());
-                              // Navigator.pop(context);
-                              // Navigator.push(
-                              //     context,
-                              //     MaterialPageRoute(
-                              //         builder: (context) =>
-                              //             MinhasNotasScreen()));
                               break;
                             case "Créditos":
                               Navigator.pop(context);
@@ -131,11 +125,13 @@ class CustomDrawer extends StatelessWidget {
                                     // Shadow(blurRadius: 5, color: Colors.black)
                                   ], color: Colors.blue),
                                 ),
-                                leading: Container(
-                                  child: SvgPicture.asset(item["icon"]),
-                                  width: 20,
-                                  height: 20,
-                                )),
+                                leading: item["icon"] is String
+                                    ? Container(
+                                        child: SvgPicture.asset(item["icon"]),
+                                        width: 20,
+                                        height: 20,
+                                      )
+                                    : item["icon"]),
                             Container(
                               margin: EdgeInsets.symmetric(horizontal: 5),
                               width: double.infinity,
