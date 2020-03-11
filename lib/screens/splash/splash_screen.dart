@@ -6,6 +6,8 @@ import 'package:sigaamobile/screens/home/home_screen.dart';
 import 'package:sigaamobile/screens/login/login_screen.dart';
 import 'package:sigaamobile/shared/logo.dart';
 
+import '../../shared/logo.dart';
+
 class SplashScreen extends StatefulWidget {
   @override
   _SplashScreenState createState() => _SplashScreenState();
@@ -38,7 +40,7 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: HomeScreen(),
+        child: sigaaLogo(),
       ),
     );
   }

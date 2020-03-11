@@ -94,6 +94,23 @@ mixin _$UserController on _UserControllerBase, Store {
     }, _$stateLoginAtom, name: '${_$stateLoginAtom.name}_set');
   }
 
+  final _$stateNotasAtom = Atom(name: '_UserControllerBase.stateNotas');
+
+  @override
+  RequestState get stateNotas {
+    _$stateNotasAtom.context.enforceReadPolicy(_$stateNotasAtom);
+    _$stateNotasAtom.reportObserved();
+    return super.stateNotas;
+  }
+
+  @override
+  set stateNotas(RequestState value) {
+    _$stateNotasAtom.context.conditionallyRunInAction(() {
+      super.stateNotas = value;
+      _$stateNotasAtom.reportChanged();
+    }, _$stateNotasAtom, name: '${_$stateNotasAtom.name}_set');
+  }
+
   final _$recoverUserAsyncAction = AsyncAction('recoverUser');
 
   @override
@@ -112,7 +129,7 @@ mixin _$UserController on _UserControllerBase, Store {
   @override
   String toString() {
     final string =
-        'user: ${user.toString()},disciplinas: ${disciplinas.toString()},notas: ${notas.toString()},recovered: ${recovered.toString()},stateLogin: ${stateLogin.toString()}';
+        'user: ${user.toString()},disciplinas: ${disciplinas.toString()},notas: ${notas.toString()},recovered: ${recovered.toString()},stateLogin: ${stateLogin.toString()},stateNotas: ${stateNotas.toString()}';
     return '{$string}';
   }
 }

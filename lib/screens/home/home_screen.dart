@@ -131,7 +131,8 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  _avatar(User _user, double _expandedHeight, double _positionAux, double radius) {
+  _avatar(
+      User _user, double _expandedHeight, double _positionAux, double radius) {
     return Positioned(
       top: (_positionAux / 2) -
           radius * (_positionAux / _expandedHeight) +
@@ -140,23 +141,23 @@ class _HomeScreenState extends State<HomeScreen> {
       left: 0,
       right: 0,
       child: Container(
-            padding: EdgeInsets.only(
-                top: MediaQuery.of(context).padding.top *
-                    (_positionAux / _expandedHeight)),
-            alignment:
-                Alignment(-0.70 + 0.7 * (_positionAux / _expandedHeight), 0),
-            child: Container(
-                decoration: BoxDecoration(boxShadow: [
-                  BoxShadow(color: Color.fromRGBO(0, 0, 0, 0.4), blurRadius: 10)
-                ], borderRadius: BorderRadius.circular(60)),
-                child: AvatarPerfil(
-                  user: _user,
-                  radius: radius,
-                ))),
+          padding: EdgeInsets.only(
+              top: MediaQuery.of(context).padding.top *
+                  (_positionAux / _expandedHeight)),
+          alignment:
+              Alignment(-0.70 + 0.7 * (_positionAux / _expandedHeight), 0),
+          child: Container(
+              decoration: BoxDecoration(boxShadow: [
+                BoxShadow(color: Color.fromRGBO(0, 0, 0, 0.4), blurRadius: 10)
+              ], borderRadius: BorderRadius.circular(60)),
+              child: AvatarPerfil(
+                user: _user,
+                radius: radius,
+              ))),
     );
   }
 
-  _container(_expandedHeight, _positionAux, User _user) {
+  _container(double _expandedHeight, double _positionAux, User _user) {
     final _name = _user.nome.toLowerCase().split(" ");
     final _info = {
       "IRA": _user.ira,
@@ -201,27 +202,20 @@ class _HomeScreenState extends State<HomeScreen> {
                   top: _positionAux == 0
                       ? MediaQuery.of(context).padding.top
                       : (70 * (_positionAux / _expandedHeight)),
-                  // top: (70 * (_positionAux / _expandedHeight)) +
-                  //     (((_positionAux / 2) -
-                  //             35 * (_positionAux / _expandedHeight) +
-                  //             MediaQuery.of(context).padding.top +
-                  //             ((kToolbarHeight - 35) / 2)) *
-                  //         (1 - (_positionAux / _expandedHeight))),
                   left: 0),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Container(
-                    // height: _positionAux == 0 ? kToolbarHeight : null,
                     alignment: Alignment(
                         -0.25 + (0.25 * (_positionAux / _expandedHeight)), 0),
-                    // color: Colors.red,
-
                     child: Text(
                       capitalize(_name[0]) + " " + capitalize(_name.last),
                       style: TextStyle(
-                          fontWeight: FontWeight.bold,
+                          fontWeight: _positionAux == 0
+                              ? FontWeight.w400
+                              : FontWeight.bold,
                           fontSize: 20,
                           color:
                               _positionAux == 0 ? Colors.white : Colors.black),

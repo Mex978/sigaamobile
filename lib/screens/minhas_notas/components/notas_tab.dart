@@ -36,7 +36,10 @@ class _NotasTabState extends State<NotasTab>
             style: TextStyle(color: Color.fromRGBO(0, 0, 0, 0.4)),
           ),
           children: disciplina.toJson().keys.map<Widget>((String key) {
-            return _tileDisciplina(key, disciplina.toJson());
+            return disciplina.toJson()[key] == null ||
+                    disciplina.toJson()[key] == "--"
+                ? Container()
+                : _tileDisciplina(key, disciplina.toJson());
           }).toList(),
         );
       }).toList(),
@@ -59,8 +62,6 @@ class _NotasTabState extends State<NotasTab>
       return Container(
         margin: EdgeInsets.only(
             bottom: key == "situacao" ? 20 : 2, top: 2, left: 5, right: 5),
-        // decoration: BoxDecoration(
-        //     color: Colors.white, borderRadius: BorderRadius.circular(4)),
         child: ListTile(
           title: Text(labelName),
           subtitle: disciplina[key] != null && disciplina[key] != "--"

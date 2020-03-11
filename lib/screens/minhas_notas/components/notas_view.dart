@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sigaamobile/models/nota_model.dart';
-import 'package:sigaamobile/screens/minhas_notas/components/custom_expansion_tile.dart';
 import 'package:sigaamobile/screens/minhas_notas/components/notas_tab.dart';
-import 'package:sigaamobile/shared/utils.dart';
 
 class NotasView extends StatefulWidget {
   final List<Nota> data;

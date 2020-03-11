@@ -24,7 +24,7 @@ abstract class _UserControllerBase with Store {
   bool recovered;
 
   @observable
-  RequestState stateLogin;
+  RequestState stateLogin, stateNotas;
 
   final _api = GetIt.I.get<ApiRepository>();
 
@@ -35,10 +35,11 @@ abstract class _UserControllerBase with Store {
       return login(
               userTemp: _credentials["user"], passTemp: _credentials["pass"])
           .then((_) {
-        if (stateLogin == RequestState.SUCCESS) {
-          return true;
-        } else if (stateLogin != null) {
-          return false;
+        switch (stateLogin) {
+          case RequestState.SUCCESS:
+            return true;
+          default:
+            return false;
         }
       });
     } else {
@@ -71,13 +72,13 @@ abstract class _UserControllerBase with Store {
   }
 
   loadNotas() async {
-    stateLogin = RequestState.LOADING;
+    stateNotas = RequestState.LOADING;
     notas.clear();
     List _temp = await _api.notas();
     for (Map<String, dynamic> json in _temp) {
       notas.add(Nota.fromJson(json));
     }
-    stateLogin = RequestState.SUCCESS;
+    stateNotas = RequestState.SUCCESS;
   }
 
   logout() {
