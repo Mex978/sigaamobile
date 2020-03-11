@@ -12,8 +12,7 @@ import 'package:sigaamobile/shared/scroll_behavior.dart';
 import 'package:sigaamobile/shared/utils.dart';
 
 class HomeScreen extends StatefulWidget {
-  final String title;
-  const HomeScreen({Key key, this.title = "Home"}) : super(key: key);
+  const HomeScreen({Key key}) : super(key: key);
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
@@ -58,17 +57,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     double _expandedHeight = 1.8 * MediaQuery.of(context).size.height / 7;
-    // User _user = _userController.user;
-    //TODO: Tirar isso
-    User _user = User(
-        curso: "Ciencia a computacao",
-        entrada: "2016.2",
-        ira: "8.2",
-        matricula: "20169069680",
-        nome: "Max Nicolas de Oliveira Lima",
-        semestre: "2020.1",
-        turno: "Vespertino");
-    final _name = _user.nome.toLowerCase().split(" ");
 
     return Scaffold(
       key: _scaffoldState,
@@ -76,8 +64,8 @@ class _HomeScreenState extends State<HomeScreen> {
       drawer: CustomDrawer(),
       body: Observer(
         builder: (_) {
-          // if (_userController.user == null)
-          //   return Center(child: CircularProgressIndicator());
+          User _user = _userController.user;
+          if (_user == null) return Center(child: CircularProgressIndicator());
 
           double _positionAux = scrollPosition(_expandedHeight);
           double radius = 20 + 40 * (_positionAux / _expandedHeight);
@@ -85,12 +73,9 @@ class _HomeScreenState extends State<HomeScreen> {
             children: <Widget>[
               NotificationListener<ScrollNotification>(
                 onNotification: (ScrollNotification scrollNotification) {
-                  if (scrollNotification is ScrollStartNotification) {
-                    print("## SCROLL IS START");
+                  if (scrollNotification is ScrollStartNotification)
                     return true;
-                  }
                   if (scrollNotification is ScrollEndNotification) {
-                    print("## SCROLL IS END");
                     switch (_scrollController.position.userScrollDirection) {
 
                       /// Scroll para baixo
@@ -130,30 +115,6 @@ class _HomeScreenState extends State<HomeScreen> {
                             Color(0xFF0E98D9)
                           ])),
                         ),
-                        titleSpacing: 0,
-                        title: AnimatedOpacity(
-                          // opacity: _positionAux == 0 ? 1 : 0,
-                          opacity: 0,
-                          duration: Duration(milliseconds: 300),
-                          child: Row(
-                            children: <Widget>[
-                              AvatarPerfil(
-                                user: _user,
-                                radius: 20,
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Text(
-                                capitalize(_name[0]) +
-                                    " " +
-                                    capitalize(_name.last),
-                                style: TextStyle(
-                                    fontSize: 20, color: Colors.white),
-                              )
-                            ],
-                          ),
-                        ),
                         expandedHeight: _expandedHeight,
                       )
                     ];
@@ -170,27 +131,20 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  _avatar(_user, _expandedHeight, _positionAux, radius) {
+  _avatar(User _user, double _expandedHeight, double _positionAux, double radius) {
     return Positioned(
       top: (_positionAux / 2) -
           radius * (_positionAux / _expandedHeight) +
           MediaQuery.of(context).padding.top +
           ((kToolbarHeight - 2 * radius) / 2),
-      //  top: -5,
-      // left: (MediaQuery.of(context).size.width / 2) - radius,
       left: 0,
       right: 0,
-      child: Opacity(
-        // opacity: scrollPosition(1.8 * MediaQuery.of(context).size.height / 7) /
-        //     _expandedHeight,
-        opacity: 1,
-        child: Container(
+      child: Container(
             padding: EdgeInsets.only(
                 top: MediaQuery.of(context).padding.top *
                     (_positionAux / _expandedHeight)),
             alignment:
                 Alignment(-0.70 + 0.7 * (_positionAux / _expandedHeight), 0),
-            // padding: EdgeInsets.only(left: 50, right: (50.0 + 90)),
             child: Container(
                 decoration: BoxDecoration(boxShadow: [
                   BoxShadow(color: Color.fromRGBO(0, 0, 0, 0.4), blurRadius: 10)
@@ -199,11 +153,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   user: _user,
                   radius: radius,
                 ))),
-      ),
     );
   }
 
-  _container(_expandedHeight, _positionAux, _user) {
+  _container(_expandedHeight, _positionAux, User _user) {
     final _name = _user.nome.toLowerCase().split(" ");
     final _info = {
       "IRA": _user.ira,
@@ -277,7 +230,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
             ),
-            Text("Ciência da Computação",
+            Text(parseCurso(_user.curso),
+                textAlign: TextAlign.center,
                 style: TextStyle(
                     color: Color.fromRGBO(0, 0, 0, 0.56)
                         .withOpacity(_positionAux / _expandedHeight))),

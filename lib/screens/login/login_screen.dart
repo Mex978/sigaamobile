@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
@@ -116,6 +117,8 @@ class _LoginScreenState extends State<LoginScreen> {
       onChanged: (content) => onChanged(content),
       obscureText: isPassword,
       focusNode: label == "Usuário" ? _userFocusNode : _passFocusNode,
+      textInputAction:
+          label == "Usuário" ? TextInputAction.next : TextInputAction.done,
       decoration: InputDecoration(
           labelText: label,
           hintText: label == "Usuário"

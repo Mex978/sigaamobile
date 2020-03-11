@@ -27,7 +27,6 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: themeDefault(),
         home: SplashScreen(),
-        // home: SplashScreen(),
       ),
     );
   }

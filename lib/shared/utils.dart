@@ -2,6 +2,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 capitalize(String s) => s[0].toUpperCase() + s.substring(1);
 
+parseCurso(String curso) {
+  List<String> _split = curso.split("-");
+  curso = _split[1];
+  curso = curso.trim();
+  curso = curso.replaceAll("CIENCIA", "CIÊNCIA");
+  return curso;
+}
+
 firstLetterCapitalized(String s) {
   String stringTemp = s[0].toUpperCase() + s.substring(1).toLowerCase();
   String string = "";
