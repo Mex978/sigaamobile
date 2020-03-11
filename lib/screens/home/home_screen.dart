@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get_it/get_it.dart';
 import 'package:sigaamobile/consts/request_state.dart';
 import 'package:sigaamobile/controllers/user_controller.dart';
@@ -33,6 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ..addListener(() {
         setState(() {
           offset = _scrollController.offset;
+          print(offset);
         });
       });
     super.initState();
@@ -82,49 +83,83 @@ class _HomeScreenState extends State<HomeScreen> {
           double radius = 20 + 40 * (_positionAux / _expandedHeight);
           return Stack(
             children: <Widget>[
-              NestedScrollView(
-                controller: _scrollController,
-                headerSliverBuilder: (context, _) {
-                  return <Widget>[
-                    SliverAppBar(
-                      pinned: true,
-                      floating: false,
-                      flexibleSpace: Container(
-                        decoration: BoxDecoration(
-                            gradient: LinearGradient(colors: [
-                          Color(0xFF19C2D7),
-                          Color(0xFF0E98D9)
-                        ])),
-                      ),
-                      titleSpacing: 0,
-                      title: AnimatedOpacity(
-                        // opacity: _positionAux == 0 ? 1 : 0,
-                        opacity: 0,
-                        duration: Duration(milliseconds: 300),
-                        child: Row(
-                          children: <Widget>[
-                            AvatarPerfil(
-                              user: _user,
-                              radius: 20,
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Text(
-                              capitalize(_name[0]) +
-                                  " " +
-                                  capitalize(_name.last),
-                              style:
-                                  TextStyle(fontSize: 20, color: Colors.white),
-                            )
-                          ],
-                        ),
-                      ),
-                      expandedHeight: _expandedHeight,
-                    )
-                  ];
+              NotificationListener<ScrollNotification>(
+                onNotification: (ScrollNotification scrollNotification) {
+                  if (scrollNotification is ScrollStartNotification) {
+                    print("## SCROLL IS START");
+                    return true;
+                  }
+                  if (scrollNotification is ScrollEndNotification) {
+                    print("## SCROLL IS END");
+                    switch (_scrollController.position.userScrollDirection) {
+
+                      /// Scroll para baixo
+                      case ScrollDirection.forward:
+                        if (offset != 0)
+                          _scrollController.animateTo(0,
+                              duration: Duration(milliseconds: 150),
+                              curve: Curves.easeInOut);
+                        break;
+
+                      /// Scroll para cima
+                      case ScrollDirection.reverse:
+                        if (offset !=
+                            _scrollController.position.maxScrollExtent)
+                          _scrollController.animateTo(
+                              _scrollController.position.maxScrollExtent,
+                              duration: Duration(milliseconds: 150),
+                              curve: Curves.easeInOut);
+                        break;
+                      default:
+                    }
+                    return true;
+                  }
+                  return false;
                 },
-                body: _body(_positionAux, _expandedHeight),
+                child: NestedScrollView(
+                  controller: _scrollController,
+                  headerSliverBuilder: (context, _) {
+                    return <Widget>[
+                      SliverAppBar(
+                        pinned: true,
+                        floating: false,
+                        flexibleSpace: Container(
+                          decoration: BoxDecoration(
+                              gradient: LinearGradient(colors: [
+                            Color(0xFF19C2D7),
+                            Color(0xFF0E98D9)
+                          ])),
+                        ),
+                        titleSpacing: 0,
+                        title: AnimatedOpacity(
+                          // opacity: _positionAux == 0 ? 1 : 0,
+                          opacity: 0,
+                          duration: Duration(milliseconds: 300),
+                          child: Row(
+                            children: <Widget>[
+                              AvatarPerfil(
+                                user: _user,
+                                radius: 20,
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text(
+                                capitalize(_name[0]) +
+                                    " " +
+                                    capitalize(_name.last),
+                                style: TextStyle(
+                                    fontSize: 20, color: Colors.white),
+                              )
+                            ],
+                          ),
+                        ),
+                        expandedHeight: _expandedHeight,
+                      )
+                    ];
+                  },
+                  body: _body(_positionAux, _expandedHeight),
+                ),
               ),
               _container(_expandedHeight, _positionAux, _user),
               _avatar(_user, _expandedHeight, _positionAux, radius)
@@ -380,24 +415,24 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
     );
-    return Stack(
-      children: <Widget>[
-        Column(
-          children: <Widget>[
-            Expanded(
-              flex: 2,
-              child: Container(
-                // color: Color(0xFF16A0E2),
-                decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                        colors: [Color(0xFF19C2D7), Color(0xFF0E98D9)])),
-                height: 200,
-                width: MediaQuery.of(context).size.width,
-              ),
-            ),
-          ],
-        ),
-      ],
-    );
+    // return Stack(
+    //   children: <Widget>[
+    //     Column(
+    //       children: <Widget>[
+    //         Expanded(
+    //           flex: 2,
+    //           child: Container(
+    //             // color: Color(0xFF16A0E2),
+    //             decoration: BoxDecoration(
+    //                 gradient: LinearGradient(
+    //                     colors: [Color(0xFF19C2D7), Color(0xFF0E98D9)])),
+    //             height: 200,
+    //             width: MediaQuery.of(context).size.width,
+    //           ),
+    //         ),
+    //       ],
+    //     ),
+    //   ],
+    // );
   }
 }
