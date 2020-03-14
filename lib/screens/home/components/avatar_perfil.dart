@@ -40,6 +40,69 @@ class HeroDialogueRoute<T> extends PageRoute<T> {
   final WidgetBuilder builder;
 }
 
+class ImagePreview extends StatelessWidget {
+  final User user;
+
+  const ImagePreview({Key key, this.user}) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () => Navigator.pop(context),
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        body: Container(
+          decoration: BoxDecoration(
+              color: Colors.white, borderRadius: BorderRadius.circular(5)),
+          padding: EdgeInsets.all(5),
+          margin: EdgeInsets.only(
+              left: 0.4 * MediaQuery.of(context).size.width / 10,
+              right: 0.4 * MediaQuery.of(context).size.width / 10,
+              top: MediaQuery.of(context).padding.top + 4,
+              bottom: MediaQuery.of(context).size.height / 3.8),
+          child: Center(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              // mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Center(
+                  child: Text(
+                    "Imagem de perfil",
+                    style: TextStyle(fontSize: 20, color: Colors.black),
+                  ),
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+                Container(
+                  color: Colors.white,
+                  child: Hero(
+                    tag: "perfil",
+                    child: Image.network(
+                      user.imagem,
+                      fit: BoxFit.fill,
+                      loadingBuilder: (BuildContext context, Widget child,
+                          ImageChunkEvent loading) {
+                        print(loading.toString());
+                        if (loading == null) return child;
+                        return Center(
+                          child: CircularProgressIndicator(
+                            valueColor:
+                                AlwaysStoppedAnimation(Color(0xFF19C2D7)),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class AvatarPerfil extends StatelessWidget {
   final User user;
   final double radius;
@@ -57,70 +120,16 @@ class AvatarPerfil extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        Navigator.push(context, HeroDialogueRoute(builder: (context) {
-          return GestureDetector(
-            onTap: () => Navigator.pop(context),
-            child: Scaffold(
-              backgroundColor: Colors.transparent,
-              body: Container(
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(5)),
-                padding: EdgeInsets.all(5),
-                margin: EdgeInsets.only(
-                    left: 0.4 * MediaQuery.of(context).size.width / 10,
-                    right: 0.4 * MediaQuery.of(context).size.width / 10,
-                    top: MediaQuery.of(context).padding.top + 4,
-                    bottom: MediaQuery.of(context).size.height / 3.8),
-                child: Center(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    // mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Center(
-                        child: Text(
-                          "Imagem de perfil",
-                          style: TextStyle(fontSize: 20, color: Colors.black),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Container(
-                        child: Hero(
-                          tag: "perfil",
-                          child: Image.network(
-                            user.imagem,
-                            fit: BoxFit.fill,
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          );
-        }));
-        // showDialog(
-        //     barrierDismissible: true,
-        //     context: context,
-        //     child: Dialog(
-        //       child: Container(
-        //         decoration:
-        //             BoxDecoration(borderRadius: BorderRadius.circular(5)),
-        //         padding: EdgeInsets.all(5),
-        //         child: Hero(
-        //           tag: "perfil",
-        //           child: Image.network(
-        //             user.imagem,
-        //             fit: BoxFit.fill,
-        //           ),
-        //         ),
-        //       ),
-        //     ));
-      },
+      onTap: user.imagem == null || user.imagem.isEmpty
+          ? null
+          : () {
+              Navigator.push(
+                  context,
+                  HeroDialogueRoute(
+                      builder: (context) => ImagePreview(
+                            user: user,
+                          )));
+            },
       child: ClipOval(
         // backgroundColor: Colors.transparent,
         child: Container(
@@ -128,26 +137,26 @@ class AvatarPerfil extends StatelessWidget {
           width: radius * 2,
           child: Stack(
             children: <Widget>[
-              // SvgPicture.asset("lib/assets/user.svg"),
-              if (user.imagem != null)
-                Container(
-                  color: Colors.white,
-                  child: Center(
-                    child: CircularProgressIndicator(),
-                  ),
-                ),
               if (user.imagem != null)
                 ClipOval(
-                  // backgroundColor: Colors.transparent,
                   child: Container(
+                    color: Colors.white,
                     height: radius * 2,
                     width: radius * 2,
                     child: Hero(
                       tag: "perfil",
-                      child: Image.network(
-                        user.imagem,
-                        fit: BoxFit.fitWidth,
-                      ),
+                      child: Image.network(user.imagem, fit: BoxFit.fitWidth,
+                          loadingBuilder: (BuildContext context, Widget child,
+                              ImageChunkEvent loading) {
+                        print("Loading Image: ${loading.toString()}");
+                        if (loading == null) return child;
+                        return Center(
+                          child: CircularProgressIndicator(
+                            valueColor:
+                                AlwaysStoppedAnimation(Color(0xFF19C2D7)),
+                          ),
+                        );
+                      }),
                     ),
                   ),
                 ),

@@ -49,7 +49,9 @@ class _DeclaracaoScreenState extends State<DeclaracaoScreen> {
                 if (!snapshotFile.hasData) {
                   return Scaffold(
                     body: Center(
-                      child: CircularProgressIndicator(),
+                      child: CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation(Color(0xFF19C2D7)),
+                      ),
                     ),
                   );
                 }
@@ -80,7 +82,9 @@ class _DeclaracaoScreenState extends State<DeclaracaoScreen> {
                 // titleSliverBar: widget.anexo.rotulo,
                 appBar: customAppBar(title: Text("Declaração de vínculo")),
                 body: Center(
-                  child: CircularProgressIndicator(),
+                  child: CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation(Color(0xFF19C2D7)),
+                  ),
                 ));
         }
       },

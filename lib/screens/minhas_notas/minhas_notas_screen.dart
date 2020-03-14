@@ -34,7 +34,9 @@ class _MinhasNotasScreenState extends State<MinhasNotasScreen> {
           default:
             return Scaffold(
               body: Center(
-                child: CircularProgressIndicator(),
+                child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation(Color(0xFF19C2D7)),
+                ),
               ),
             );
         }

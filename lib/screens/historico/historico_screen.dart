@@ -49,7 +49,9 @@ class _HistoricoScreenState extends State<HistoricoScreen> {
                 if (!snapshotFile.hasData) {
                   return Scaffold(
                     body: Center(
-                      child: CircularProgressIndicator(),
+                      child: CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation(Color(0xFF19C2D7)),
+                      ),
                     ),
                   );
                 }
@@ -77,7 +79,9 @@ class _HistoricoScreenState extends State<HistoricoScreen> {
             return Scaffold(
                 appBar: customAppBar(title: Text("Histórico")),
                 body: Center(
-                  child: CircularProgressIndicator(),
+                  child: CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation(Color(0xFF19C2D7)),
+                  ),
                 ));
         }
       },

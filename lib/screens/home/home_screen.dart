@@ -68,7 +68,11 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Observer(
         builder: (_) {
           User _user = _userController.user;
-          if (_user == null) return Center(child: CircularProgressIndicator());
+          if (_user == null)
+            return Center(
+                child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation(Color(0xFF19C2D7)),
+            ));
 
           double _positionAux = scrollPosition(_expandedHeight);
           double radius = 20 + 40 * (_positionAux / _expandedHeight);

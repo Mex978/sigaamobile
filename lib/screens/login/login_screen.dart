@@ -91,7 +91,10 @@ class _LoginScreenState extends State<LoginScreen> {
                           builder: (_) {
                             switch (_userController.stateLogin) {
                               case RequestState.LOADING:
-                                return CircularProgressIndicator();
+                                return CircularProgressIndicator(
+                                  valueColor:
+                                      AlwaysStoppedAnimation(Color(0xFF19C2D7)),
+                                );
                               case RequestState.SUCCESS:
                                 return _buttonLogin();
                               default:
