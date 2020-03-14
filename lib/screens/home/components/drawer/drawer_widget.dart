@@ -6,20 +6,14 @@ import 'package:sigaamobile/controllers/user_controller.dart';
 import 'package:sigaamobile/screens/credits/credits_screen.dart';
 import 'package:sigaamobile/screens/declaracao/declaracao_screen.dart';
 import 'package:sigaamobile/screens/historico/historico_screen.dart';
-import 'package:sigaamobile/screens/lista_disciplinas/lista_disciplinas.dart';
 import 'package:sigaamobile/screens/login/login_screen.dart';
 import 'package:sigaamobile/screens/minhas_notas/minhas_notas_screen.dart';
-import 'package:sigaamobile/services/mocked_data.dart';
 
 class CustomDrawer extends StatelessWidget {
+  final ImageProvider logo;
   final UserController _userController = GetIt.I.get<UserController>();
-  final List<Map> options = [
-    {"name": "Minhas notas", "icon": "lib/assets/list.svg"},
-    {"name": "Calendário acadêmico", "icon": "lib/assets/calendar.svg"},
-    {"name": "Declaração de vínculo", "icon": "lib/assets/certificate.svg"},
-    {"name": "Histórico", "icon": "lib/assets/history.svg"},
-    {"name": "Créditos", "icon": "lib/assets/pikachu.svg"}
-  ];
+
+  CustomDrawer({Key key, this.logo}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +21,30 @@ class CustomDrawer extends StatelessWidget {
       Navigator.pop(context);
       Navigator.push(context, MaterialPageRoute(builder: (_) => screen));
     }
+
+    final List<Map> options = [
+      {
+        "name": "Minhas notas",
+        "icon": "lib/assets/list.svg",
+        "onPressed": () => _navigate(MinhasNotasScreen())
+      },
+      {"name": "Calendário acadêmico", "icon": "lib/assets/calendar.svg"},
+      {
+        "name": "Declaração de vínculo",
+        "icon": "lib/assets/certificate.svg",
+        "onPressed": () => _navigate(DeclaracaoScreen())
+      },
+      {
+        "name": "Histórico",
+        "icon": "lib/assets/history.svg",
+        "onPressed": () => _navigate(HistoricoScreen())
+      },
+      {
+        "name": "Créditos",
+        "icon": "lib/assets/pikachu.svg",
+        "onPressed": () => _navigate(CreditsScreen())
+      }
+    ];
 
     return Drawer(
       child: Container(
@@ -45,9 +63,8 @@ class CustomDrawer extends StatelessWidget {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    const CircleAvatar(
-                      backgroundImage:
-                          const AssetImage("lib/assets/ufpi_logo.png"),
+                    CircleAvatar(
+                      backgroundImage: logo,
                       radius: 40,
                     ),
                     SizedBox(
@@ -81,57 +98,18 @@ class CustomDrawer extends StatelessWidget {
                     return Material(
                       color: Colors.transparent,
                       child: InkWell(
-                        onTap: () {
-                          switch (item["name"]) {
-                            case "Disciplinas":
-                              Navigator.pop(context);
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (_) => ListaDisciplinasScreen(
-                                          disciplinas:
-                                              userMockado["disciplinas"])));
-                              break;
-                            case "Minhas notas":
-                              _navigate(MinhasNotasScreen());
-                              break;
-                            case "Declaração de vínculo":
-                              Navigator.pop(context);
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (_) => DeclaracaoScreen()));
-                              break;
-                            case "Histórico":
-                              Navigator.pop(context);
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (_) => HistoricoScreen()));
-                              break;
-                            case "Créditos":
-                              Navigator.pop(context);
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => CreditsScreen()));
-                              break;
-                              break;
-                            default:
-                              showToastWidget(
-                                  Container(
-                                    decoration: BoxDecoration(
-                                        color: Colors.grey[400],
-                                        borderRadius:
-                                            BorderRadius.circular(100)),
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 30, vertical: 15),
-                                    child: Text("Em breve!"),
-                                  ),
-                                  position: ToastPosition.bottom,
-                                  duration: Duration(milliseconds: 850));
-                          }
-                        },
+                        onTap: item["onPressed"] ??
+                            () => showToastWidget(
+                                Container(
+                                  decoration: BoxDecoration(
+                                      color: Colors.grey[400],
+                                      borderRadius: BorderRadius.circular(100)),
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 30, vertical: 15),
+                                  child: Text("Em breve!"),
+                                ),
+                                position: ToastPosition.bottom,
+                                duration: Duration(milliseconds: 850)),
                         child: Column(
                           children: <Widget>[
                             ListTile(

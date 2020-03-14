@@ -7,10 +7,10 @@ themeDefault() {
       appBarTheme: AppBarTheme(color: Color(0xFF152F94)),
 
       ///Transição de telas
-      pageTransitionsTheme: PageTransitionsTheme(builders: {
-        TargetPlatform.android: CupertinoPageTransitionsBuilder(),
-        TargetPlatform.iOS: CupertinoPageTransitionsBuilder()
-      }),
+      // pageTransitionsTheme: PageTransitionsTheme(builders: {
+      //   TargetPlatform.android: CupertinoPageTransitionsBuilder(),
+      //   TargetPlatform.iOS: CupertinoPageTransitionsBuilder()
+      // }),
 
       ///Tema para TextFiled
       inputDecorationTheme: InputDecorationTheme(

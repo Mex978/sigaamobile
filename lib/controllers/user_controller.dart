@@ -45,11 +45,10 @@ abstract class _UserControllerBase with Store {
       return login(
               userTemp: _credentials["user"], passTemp: _credentials["pass"])
           .then((_) {
-        switch (stateLogin) {
-          case RequestState.SUCCESS:
-            return true;
-          default:
-            return false;
+        if (stateLogin == RequestState.SUCCESS) {
+          return true;
+        } else if (stateLogin != null) {
+          return false;
         }
       });
     } else {

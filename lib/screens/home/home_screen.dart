@@ -24,9 +24,11 @@ class _HomeScreenState extends State<HomeScreen> {
   final _userController = GetIt.I.get<UserController>();
   ScrollController _scrollController;
   double offset = 0.0;
+  ImageProvider logo;
 
   @override
   void initState() {
+    logo = AssetImage("lib/assets/ufpi_logo.png");
     _userController.stateLogin = RequestState.IDLE;
     _scrollController = new ScrollController()
       ..addListener(() {
@@ -38,14 +40,15 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
   }
 
+  @override
+  void didChangeDependencies() {
+    precacheImage(logo, context);
+    super.didChangeDependencies();
+  }
+
   double scrollPosition(double expandedHeight) {
     double res = expandedHeight;
-    if (offset < (res - kToolbarHeight)) {
-      res -= offset;
-    } else {
-      res = kToolbarHeight;
-    }
-    return res == kToolbarHeight ? 0 : res;
+    return offset <= (res) ? res -= offset : 0;
   }
 
   @override
@@ -61,7 +64,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       key: _scaffoldState,
       backgroundColor: Colors.white,
-      drawer: CustomDrawer(),
+      drawer: CustomDrawer(logo: logo),
       body: Observer(
         builder: (_) {
           User _user = _userController.user;
@@ -144,8 +147,7 @@ class _HomeScreenState extends State<HomeScreen> {
           padding: EdgeInsets.only(
               top: MediaQuery.of(context).padding.top *
                   (_positionAux / _expandedHeight)),
-          alignment:
-              Alignment(-0.70 + 0.7 * (_positionAux / _expandedHeight), 0),
+          alignment: Alignment(0.9 - 0.9 * (_positionAux / _expandedHeight), 0),
           child: Container(
               decoration: BoxDecoration(boxShadow: [
                 BoxShadow(color: Color.fromRGBO(0, 0, 0, 0.4), blurRadius: 10)
@@ -174,7 +176,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 MediaQuery.of(context).padding.top -
                 (MediaQuery.of(context).padding.top *
                     (1 - (_positionAux / _expandedHeight)))),
-        // top: _positionAux / 2),
         decoration: BoxDecoration(
             color: Colors.white.withOpacity(_positionAux / _expandedHeight),
             boxShadow: _positionAux == 0
@@ -195,35 +196,57 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           children: <Widget>[
             Container(
-              height: _positionAux == 0 ? kToolbarHeight : null,
-              alignment: Alignment(
-                  -0.25 + (0.25 * (_positionAux / _expandedHeight)), 0),
+              height: 40,
               margin: EdgeInsets.only(
-                  top: _positionAux == 0
-                      ? MediaQuery.of(context).padding.top
-                      : (70 * (_positionAux / _expandedHeight)),
-                  left: 0),
+                top: 60 - 28 * (1 - (_positionAux / _expandedHeight)),
+              ),
+              alignment: Alignment.center,
               child: Row(
-                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Container(
-                    alignment: Alignment(
-                        -0.25 + (0.25 * (_positionAux / _expandedHeight)), 0),
-                    child: Text(
-                      capitalize(_name[0]) + " " + capitalize(_name.last),
-                      style: TextStyle(
-                          fontWeight: _positionAux == 0
-                              ? FontWeight.w400
-                              : FontWeight.bold,
-                          fontSize: 20,
-                          color:
-                              _positionAux == 0 ? Colors.white : Colors.black),
-                    ),
-                  ),
+                  Text(
+                    capitalize(_name[0]) + " " + capitalize(_name.last),
+                    style: TextStyle(
+                        fontWeight: _positionAux == 0
+                            ? FontWeight.w400
+                            : FontWeight.bold,
+                        fontSize: 20,
+                        color: _positionAux == 0 ? Colors.white : Colors.black),
+                  )
                 ],
               ),
             ),
+            // Container(
+            //   height: _positionAux == 0 ? kToolbarHeight : null,
+            //   alignment: Alignment(
+            //       -0.00 + (0.00 * (_positionAux / _expandedHeight)), 0),
+            //   margin: EdgeInsets.only(
+            //       top: _positionAux == 0
+            //           ? MediaQuery.of(context).padding.top
+            //           : (70 * (_positionAux / _expandedHeight)),
+            //       left: 0),
+            //   child: Row(
+            //     mainAxisSize: MainAxisSize.min,
+            //     mainAxisAlignment: MainAxisAlignment.center,
+            //     children: <Widget>[
+            //       Container(
+            //         alignment: Alignment(
+            //             -0.25 + (0.25 * (_positionAux / _expandedHeight)), 0),
+            //         child: Text(
+            //           capitalize(_name[0]) + " " + capitalize(_name.last),
+            //           style: TextStyle(
+            //               fontWeight: _positionAux == 0
+            //                   ? FontWeight.w400
+            //                   : FontWeight.bold,
+            //               fontSize: 20,
+            //               color:
+            //                   _positionAux == 0 ? Colors.white : Colors.black),
+            //         ),
+            //       ),
+            //     ],
+            //   ),
+            // ),
             Text(parseCurso(_user.curso),
                 textAlign: TextAlign.center,
                 style: TextStyle(
@@ -307,12 +330,13 @@ class _HomeScreenState extends State<HomeScreen> {
                     borderRadius: BorderRadius.circular(5),
                     onTap: () {
                       Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (_) => DisciplinaScreen(
-                                    disciplina: firstLetterCapitalized(
-                                        item.componenteCurricular),
-                                  )));
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) => DisciplinaScreen(
+                                  disciplina: firstLetterCapitalized(
+                                      item.componenteCurricular),
+                                )),
+                      );
                     },
                     child: Padding(
                       padding:
