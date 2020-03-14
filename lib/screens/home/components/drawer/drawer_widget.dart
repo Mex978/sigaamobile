@@ -93,104 +93,106 @@ class CustomDrawer extends StatelessWidget {
                 ),
               ),
               Expanded(
-                child: ListView(
-                  children: options.map<Widget>((item) {
-                    return Material(
-                      color: Colors.transparent,
-                      child: InkWell(
-                        onTap: item["onPressed"] ??
-                            () => showToastWidget(
-                                Container(
-                                  decoration: BoxDecoration(
-                                      color: Colors.grey[400],
-                                      borderRadius: BorderRadius.circular(100)),
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 30, vertical: 15),
-                                  child: Text("Em breve!"),
-                                ),
-                                position: ToastPosition.bottom,
-                                duration: Duration(milliseconds: 850)),
-                        child: Column(
-                          children: <Widget>[
-                            ListTile(
-                                title: Text(
-                                  item["name"],
-                                  style: TextStyle(shadows: [
-                                    // Shadow(blurRadius: 5, color: Colors.black)
-                                  ], color: Colors.blue),
-                                ),
-                                leading: item["icon"] is String
-                                    ? Container(
-                                        child: SvgPicture.asset(item["icon"]),
-                                        width: 20,
-                                        height: 20,
-                                      )
-                                    : item["icon"]),
-                            Container(
-                              margin: EdgeInsets.symmetric(horizontal: 5),
-                              width: double.infinity,
-                              height: 1,
-                              color: Colors.black12,
-                            )
-                          ],
-                        ),
-                      ),
-                    );
-                  }).toList()
-                    ..add(Material(
-                      color: Colors.transparent,
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.pop(context);
-                          showDialog(
-                              context: context,
-                              builder: (context) {
-                                return AlertDialog(
-                                  title: Text(
-                                    "Fazer Logout",
-                                    style: TextStyle(color: Colors.black),
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: options.map<Widget>((item) {
+                      return Material(
+                        color: Colors.transparent,
+                        child: InkWell(
+                          onTap: item["onPressed"] ??
+                              () => showToastWidget(
+                                  Container(
+                                    decoration: BoxDecoration(
+                                        color: Colors.grey[400],
+                                        borderRadius:
+                                            BorderRadius.circular(100)),
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 30, vertical: 15),
+                                    child: Text("Em breve!"),
                                   ),
-                                  content: Text(
-                                      "Você confirma que deseja fazer logout da aplicação?"),
-                                  actions: <Widget>[
-                                    FlatButton(
-                                      child: Text("Cancelar",
-                                          style: TextStyle(color: Colors.red)),
-                                      onPressed: () => Navigator.pop(context),
+                                  position: ToastPosition.bottom,
+                                  duration: Duration(milliseconds: 850)),
+                          child: Column(
+                            children: <Widget>[
+                              ListTile(
+                                  title: Text(
+                                    item["name"],
+                                    style: TextStyle(shadows: [
+                                      // Shadow(blurRadius: 5, color: Colors.black)
+                                    ], color: Colors.blue),
+                                  ),
+                                  leading: item["icon"] is String
+                                      ? Container(
+                                          child: SvgPicture.asset(item["icon"]),
+                                          width: 20,
+                                          height: 20,
+                                        )
+                                      : item["icon"]),
+                              Container(
+                                margin: EdgeInsets.symmetric(horizontal: 5),
+                                width: double.infinity,
+                                height: 1,
+                                color: Colors.black12,
+                              )
+                            ],
+                          ),
+                        ),
+                      );
+                    }).toList()
+                      ..add(Material(
+                        color: Colors.transparent,
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.pop(context);
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    title: Text(
+                                      "Fazer Logout",
+                                      style: TextStyle(color: Colors.black),
                                     ),
-                                    FlatButton(
-                                      child: Text("Confirmar"),
-                                      onPressed: () {
-                                        _userController.logout();
-                                        Navigator.pop(context);
-                                        Navigator.pushReplacement(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    LoginScreen(),
-                                                settings: RouteSettings(
-                                                    isInitialRoute: true)));
-                                      },
-                                    )
-                                  ],
-                                );
-                              });
-                        },
-                        child: ListTile(
-                          enabled: true,
-                          leading: Icon(Icons.exit_to_app, color: Colors.red),
-                          title: Text(
-                            "Logout",
-                            style: TextStyle(
-                              color: Colors.red,
-                              // shadows: [
-                              //   Shadow(blurRadius: 2, color: Colors.black)
-                              // ],
+                                    content: Text(
+                                        "Você confirma que deseja fazer logout da aplicação?"),
+                                    actions: <Widget>[
+                                      FlatButton(
+                                        child: Text("Cancelar",
+                                            style:
+                                                TextStyle(color: Colors.red)),
+                                        onPressed: () => Navigator.pop(context),
+                                      ),
+                                      FlatButton(
+                                        child: Text("Confirmar"),
+                                        onPressed: () {
+                                          _userController.logout();
+                                          Navigator.pop(context);
+                                          Navigator.pushReplacement(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      LoginScreen()));
+                                        },
+                                      )
+                                    ],
+                                  );
+                                });
+                          },
+                          child: ListTile(
+                            enabled: true,
+                            leading: Icon(Icons.exit_to_app, color: Colors.red),
+                            title: Text(
+                              "Logout",
+                              style: TextStyle(
+                                color: Colors.red,
+                                // shadows: [
+                                //   Shadow(blurRadius: 2, color: Colors.black)
+                                // ],
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    )),
+                      )),
+                  ),
                 ),
               )
             ]),

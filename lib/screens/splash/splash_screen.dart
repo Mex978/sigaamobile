@@ -22,15 +22,11 @@ class _SplashScreenState extends State<SplashScreen> {
       Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-              builder: (context) => isSuccess ? HomeScreen() : LoginScreen(),
-              settings: RouteSettings(isInitialRoute: true)));
+              builder: (context) => isSuccess ? HomeScreen() : LoginScreen()));
     }).catchError((e) {
       Future.delayed(Duration(seconds: 2), () {
         Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-                builder: (context) => LoginScreen(),
-                settings: RouteSettings(isInitialRoute: true)));
+            context, MaterialPageRoute(builder: (context) => LoginScreen()));
       });
     });
     super.initState();

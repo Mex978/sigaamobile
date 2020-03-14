@@ -25,7 +25,7 @@ themeDefault() {
       ///Tema de texto
       fontFamily: "Open Sans",
       textTheme: TextTheme(
-          title: TextStyle(
+          headline6: TextStyle(
               color: Colors.white, fontWeight: FontWeight.w600, fontSize: 16),
           button: TextStyle(
               color: Colors.white, fontWeight: FontWeight.w600, fontSize: 16)),
