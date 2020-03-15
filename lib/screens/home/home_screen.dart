@@ -25,6 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
   ScrollController _scrollController;
   double offset = 0.0;
   ImageProvider logo;
+  List<GlobalKey> cardKeys = [];
 
   @override
   void initState() {
@@ -44,6 +45,21 @@ class _HomeScreenState extends State<HomeScreen> {
   void didChangeDependencies() {
     precacheImage(logo, context);
     super.didChangeDependencies();
+  }
+
+  _canScroll(BuildContext context, double expandedHeight) {
+    var aux = (25 + MediaQuery.of(context).size.height / 8);
+    var _sizeAvaliable = MediaQuery.of(context).size.height -
+        expandedHeight -
+        aux -
+        MediaQuery.of(context).padding.top -
+        MediaQuery.of(context).padding.bottom;
+
+    var _length = _userController.disciplinas.length;
+
+    var _currentAllCardsSize = 110 * _length + 15 * (_length - 1);
+
+    return _currentAllCardsSize > _sizeAvaliable;
   }
 
   double scrollPosition(double expandedHeight) {
@@ -73,6 +89,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: CircularProgressIndicator(
               valueColor: AlwaysStoppedAnimation(Color(0xFF19C2D7)),
             ));
+
+          bool canScroll = _canScroll(context, _expandedHeight) ?? true;
+
+          print("Can Scroll: $canScroll");
 
           double _positionAux = scrollPosition(_expandedHeight);
           double radius = 20 + 40 * (_positionAux / _expandedHeight);
@@ -108,10 +128,12 @@ class _HomeScreenState extends State<HomeScreen> {
                   }
                   return false;
                 },
-                child: NestedScrollView(
-                  controller: _scrollController,
-                  headerSliverBuilder: (context, _) {
-                    return <Widget>[
+                child: CustomScrollView(
+                    physics: canScroll
+                        ? AlwaysScrollableScrollPhysics()
+                        : NeverScrollableScrollPhysics(),
+                    controller: _scrollController,
+                    slivers: <Widget>[
                       SliverAppBar(
                         pinned: true,
                         floating: false,
@@ -123,11 +145,11 @@ class _HomeScreenState extends State<HomeScreen> {
                           ])),
                         ),
                         expandedHeight: _expandedHeight,
+                      ),
+                      SliverFillRemaining(
+                        child: _body(_positionAux, _expandedHeight),
                       )
-                    ];
-                  },
-                  body: _body(_positionAux, _expandedHeight),
-                ),
+                    ]),
               ),
               _container(_expandedHeight, _positionAux, _user),
               _avatar(_user, _expandedHeight, _positionAux, radius)
@@ -299,96 +321,105 @@ class _HomeScreenState extends State<HomeScreen> {
       child: ScrollConfiguration(
         behavior: MyBehavior(),
         child: ListView(
-          physics: NeverScrollableScrollPhysics(),
-          padding: EdgeInsets.symmetric(
-              horizontal: 16,
-              vertical: ((25 + MediaQuery.of(context).size.height / 8) *
-                      (_positionAux / _expandedHeight)) +
-                  (MediaQuery.of(context).padding.top + kToolbarHeight + 5) *
-                      (1 - (_positionAux / _expandedHeight))),
-          children: <Widget>[
-            Container(
-                margin: EdgeInsets.only(bottom: 10),
-                child: Text(
-                  "Disciplinas",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                )),
-          ]..addAll(_userController.disciplinas.map<Widget>((item) {
-              return Container(
-                margin: EdgeInsets.only(bottom: 15),
-                decoration: BoxDecoration(
-                    // color: Color(0xFF195A79),
-                    // color: Colors.white,
-                    gradient: LinearGradient(
-                        colors: [Color(0xFF19C2D7), Color(0xFF0E98D9)]),
+            physics: NeverScrollableScrollPhysics(),
+            padding: EdgeInsets.symmetric(
+                horizontal: 16,
+                vertical: ((25 + MediaQuery.of(context).size.height / 8) *
+                        (_positionAux / _expandedHeight)) +
+                    (MediaQuery.of(context).padding.top + kToolbarHeight + 5) *
+                        (1 - (_positionAux / _expandedHeight))),
+            children: <Widget>[
+              Container(
+                  margin: EdgeInsets.only(bottom: 10),
+                  child: Text(
+                    "Disciplinas",
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                  )),
+            ]..addAll(_userController.disciplinas.map<Widget>((item) {
+                // final _key = new GlobalKey();
+                // cardKeys.add(_key);
+                // print("Tamanho da lista de keys: ${cardKeys.length}");
+                return Container(
+                  margin: EdgeInsets.only(bottom: 15),
+                  decoration: BoxDecoration(
+                      // color: Color(0xFF195A79),
+                      // color: Colors.white,
+                      gradient: LinearGradient(
+                          colors: [Color(0xFF19C2D7), Color(0xFF0E98D9)]),
+                      borderRadius: BorderRadius.circular(5),
+                      // border: Border.all(color: Color(0xFF16A0E2)),
+                      boxShadow: [
+                        BoxShadow(
+                            color: Color.fromRGBO(0, 0, 0, 0.4), blurRadius: 5)
+                      ]),
+                  child: Material(
+                    color: Colors.transparent,
                     borderRadius: BorderRadius.circular(5),
-                    // border: Border.all(color: Color(0xFF16A0E2)),
-                    boxShadow: [
-                      BoxShadow(
-                          color: Color.fromRGBO(0, 0, 0, 0.4), blurRadius: 5)
-                    ]),
-                child: Material(
-                  color: Colors.transparent,
-                  borderRadius: BorderRadius.circular(5),
-                  child: InkWell(
-                    borderRadius: BorderRadius.circular(5),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (_) => DisciplinaScreen(
-                                  disciplina: firstLetterCapitalized(
-                                      item.componenteCurricular),
-                                )),
-                      );
-                    },
-                    child: Padding(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(item.componenteCurricular,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w600)),
-                          Column(
-                            children: item.toJson().keys.map<Widget>((key) {
-                              if (key == "componente_curricular" ||
-                                  key == "class_id" ||
-                                  key == "form_acessarTurmaVirtual")
-                                return Container();
-                              return Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Text(
-                                    "${capitalize(key)}: ",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 12,
-                                        color: Colors.white),
-                                  ),
-                                  Expanded(
-                                      child: Text(
-                                          key == "horario"
-                                              ? date_parser(item.toJson()[key])
-                                              : item.toJson()[key],
-                                          style: TextStyle(
-                                              fontSize: 12,
-                                              color: Colors.white)))
-                                ],
-                              );
-                            }).toList(),
-                          )
-                        ],
+                    child: InkWell(
+                      borderRadius: BorderRadius.circular(5),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => DisciplinaScreen(
+                                    disciplina: firstLetterCapitalized(
+                                        item.componenteCurricular),
+                                  )),
+                        );
+                      },
+                      child: Padding(
+                        padding:
+                            EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(item.componenteCurricular,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w600)),
+                            Column(
+                              children: item.toJson().keys.map<Widget>((key) {
+                                if (key == "componente_curricular" ||
+                                    key == "class_id" ||
+                                    key == "form_acessarTurmaVirtual")
+                                  return Container();
+                                return Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Text(
+                                      "${capitalize(key)}: ",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 12,
+                                          color: Colors.white),
+                                    ),
+                                    Expanded(
+                                        child: Text(
+                                            key == "horario"
+                                                ? date_parser(
+                                                    item.toJson()[key])
+                                                : item.toJson()[key],
+                                            style: TextStyle(
+                                                fontSize: 12,
+                                                color: Colors.white)))
+                                  ],
+                                );
+                              }).toList(),
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),
-              );
-            }).toList()),
-        ),
+                );
+              }).toList())
+            // ..add(Container(
+            //   color: Colors.red,
+            //   height: 20 + 80.0,
+            //   width: 2,
+            // )),
+            ),
       ),
     );
     // return Stack(
