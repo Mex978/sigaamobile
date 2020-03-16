@@ -47,17 +47,19 @@ class _HomeScreenState extends State<HomeScreen> {
     super.didChangeDependencies();
   }
 
-  _canScroll(BuildContext context, double expandedHeight) {
+  _canScroll() {
+    double _expandedHeight = 1.8 * MediaQuery.of(context).size.height / 7;
     var aux = (25 + MediaQuery.of(context).size.height / 8);
     var _sizeAvaliable = MediaQuery.of(context).size.height -
-        expandedHeight -
+        _expandedHeight -
         aux -
         MediaQuery.of(context).padding.top -
         MediaQuery.of(context).padding.bottom;
 
     var _length = _userController.disciplinas.length;
 
-    var _currentAllCardsSize = 110 * _length + 15 * (_length - 1);
+    var _currentAllCardsSize = 95 * _length + 15 * (_length - 1);
+    // var _currentAllCardsSize = 110 * _length + 15 * (_length - 1);
 
     return _currentAllCardsSize > _sizeAvaliable;
   }
@@ -90,7 +92,7 @@ class _HomeScreenState extends State<HomeScreen> {
               valueColor: AlwaysStoppedAnimation(Color(0xFF19C2D7)),
             ));
 
-          bool canScroll = _canScroll(context, _expandedHeight) ?? true;
+          bool canScroll = _canScroll() ?? true;
 
           print("Can Scroll: $canScroll");
 
@@ -107,10 +109,15 @@ class _HomeScreenState extends State<HomeScreen> {
 
                       /// Scroll para baixo
                       case ScrollDirection.forward:
+                        print("SCROLL PARA BAIXO");
                         if (offset != 0)
                           _scrollController.animateTo(0,
-                              duration: Duration(milliseconds: 150),
+                              duration: Duration(milliseconds: 100),
                               curve: Curves.easeInOut);
+                        // _scrollController.jumpTo(0,
+                        // duration: Duration(milliseconds: 150),
+                        // curve: Curves.easeInOut
+                        // );
                         break;
 
                       /// Scroll para cima
@@ -128,28 +135,55 @@ class _HomeScreenState extends State<HomeScreen> {
                   }
                   return false;
                 },
-                child: CustomScrollView(
-                    physics: canScroll
-                        ? AlwaysScrollableScrollPhysics()
-                        : NeverScrollableScrollPhysics(),
-                    controller: _scrollController,
-                    slivers: <Widget>[
-                      SliverAppBar(
-                        pinned: true,
-                        floating: false,
-                        flexibleSpace: Container(
-                          decoration: BoxDecoration(
-                              gradient: LinearGradient(colors: [
-                            Color(0xFF19C2D7),
-                            Color(0xFF0E98D9)
-                          ])),
-                        ),
-                        expandedHeight: _expandedHeight,
+                child: canScroll
+                    ? NestedScrollView(
+                        controller: _scrollController,
+                        headerSliverBuilder: (context, _) {
+                          return <Widget>[
+                            SliverAppBar(
+                              pinned: true,
+                              floating: false,
+                              flexibleSpace: Container(
+                                decoration: BoxDecoration(
+                                    gradient: LinearGradient(colors: [
+                                  Color(0xFF19C2D7),
+                                  Color(0xFF0E98D9)
+                                ])),
+                              ),
+                              expandedHeight: _expandedHeight,
+                            )
+                          ];
+                        },
+                        body: _body(_positionAux, _expandedHeight)
+                        // body: <Widget>[
+
+                        //   SliverFillRemaining(
+                        //     // fillOverscroll: false,
+                        //     // hasScrollBody: false,
+                        //     child: _body(_positionAux, _expandedHeight),
+                        //   )
+                        // ]
+                        )
+                    : CustomScrollView(
+                        physics: NeverScrollableScrollPhysics(),
+                        slivers: <Widget>[
+                          SliverAppBar(
+                            pinned: true,
+                            floating: true,
+                            flexibleSpace: Container(
+                              decoration: BoxDecoration(
+                                  gradient: LinearGradient(colors: [
+                                Color(0xFF19C2D7),
+                                Color(0xFF0E98D9)
+                              ])),
+                            ),
+                            expandedHeight: _expandedHeight,
+                          ),
+                          SliverFillRemaining(
+                            child: _body(_positionAux, _expandedHeight),
+                          )
+                        ],
                       ),
-                      SliverFillRemaining(
-                        child: _body(_positionAux, _expandedHeight),
-                      )
-                    ]),
               ),
               _container(_expandedHeight, _positionAux, _user),
               _avatar(_user, _expandedHeight, _positionAux, radius)
