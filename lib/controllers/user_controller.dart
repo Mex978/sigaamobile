@@ -43,18 +43,9 @@ abstract class _UserControllerBase with Store {
     final Map<String, String> _credentials = await getDataUser();
     if (_credentials != null) {
       return login(
-              userTemp: _credentials["user"], passTemp: _credentials["pass"])
-          .then((_) {
-        if (stateLogin == RequestState.SUCCESS) {
-          return true;
-        } else if (stateLogin != null) {
-          return false;
-        }
-      });
+          userTemp: _credentials["user"], passTemp: _credentials["pass"]);
     } else {
-      print("Entrou aqui?");
       stateLogin = RequestState.ERROR;
-      return false;
     }
   }
 
