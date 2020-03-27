@@ -334,13 +334,9 @@ class _HomeScreenState extends State<HomeScreen> {
                               return Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
-                                  Text(
-                                    "${capitalize(key)}: ",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 12,
-                                        color: Colors.white),
-                                  ),
+                                  key == "horario"
+                                      ? Icon(Icons.access_time)
+                                      : Icon(Icons.location_on),
                                   Expanded(
                                       child: Text(
                                           key == "horario"
